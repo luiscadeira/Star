@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>STAR STUDIO CAR - BUSINESS</title>
+    <style>
+        :root {
+            --primary: #25D366;
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --input-bg: #2d2d2d;
+            --text-main: #ffffff;
+            --text-sub: #b3b3b3;
+            --danger: #ff4757;
+            --accent: #3d5afe;
+            --radius: 14px;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); margin: 0; padding: 0; }
+
+        .nav-tabs { display: flex; background: #000; padding: 8px; gap: 5px; position: sticky; top: 0; z-index: 1000; }
+        .tab-btn { flex: 1; padding: 12px 5px; border: none; background: transparent; color: var(--text-sub); font-weight: 700; font-size: 0.7rem; border-radius: 10px; transition: 0.3s; }
+        .tab-btn.active { background: var(--card-bg); color: var(--primary); }
+
+        .container { width: 100%; max-width: 500px; margin: 0 auto; padding: 15px; padding-bottom: 120px; }
+        header { text-align: center; margin-bottom: 20px; }
+        header h1 { font-size: 1.4rem; margin: 0; font-weight: 900; }
+        header span { font-size: 0.7rem; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; }
+
+        .card { background: var(--card-bg); border-radius: var(--radius); padding: 18px; margin-bottom: 15px; border: 1px solid #333; }
+        .section-title { font-size: 0.75rem; font-weight: 800; margin-bottom: 12px; color: var(--text-sub); text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+
+        input, select, textarea { width: 100%; border: 1px solid #444; border-radius: 10px; padding: 12px; font-size: 0.95rem; background: var(--input-bg); color: white; margin-bottom: 10px; }
+        input:focus { border-color: var(--primary); outline: none; }
+
+        .day-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333; }
+        .inspection-grid, .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .inspect-item, .service-item { background: #252525; padding: 10px; border-radius: 8px; font-size: 0.75rem; display: flex; align-items: center; gap: 8px; border: 1px solid transparent; cursor: pointer; }
+        
+        .inspect-item:has(input:checked) { border-color: var(--danger); color: var(--danger); }
+        .service-item input { display: none; }
+        .service-item:has(input:checked) { border-color: var(--primary); background: rgba(37, 211, 102, 0.1); color: var(--primary); }
+
+        .total-display { font-size: 1.1rem; font-weight: 900; text-align: center; color: var(--primary); background: rgba(37, 211, 102, 0.1); padding: 10px; border-radius: 10px; margin-bottom: 10px; }
+
+        .btn { border: none; border-radius: 10px; padding: 14px; font-size: 0.8rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; flex: 1; }
+        .btn-copy { background: #333; color: white; }
+        .btn-ready { background: #ff9f43; color: white; margin-bottom: 10px; }
+        
+        .fixed-action { position: fixed; bottom: 20px; right: 20px; left: 20px; z-index: 2000; }
+        .btn-whatsapp { background: var(--primary); color: white; padding: 16px; border-radius: 50px; font-size: 0.9rem; font-weight: 800; box-shadow: 0 10px 20px rgba(0,0,0,0.4); width: 100%; border: none; }
+
+        #toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 8px 20px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; display: none; z-index: 3000; }
+        
+        .history-item { background: #252525; padding: 12px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid var(--primary); font-size: 0.8rem; }
+    </style>
+</head>
+
+<body>
+
+    <div id="toast">Copiado!</div>
+
+    <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="openTab('semanal')">AGENDA</button>
+        <button class="tab-btn" onclick="openTab('individual')">NOVO SERVIÇO</button>
+        <button class="tab-btn" onclick="openTab('historico')">HISTÓRICO</button>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>STAR STUDIO CAR</h1>
+            <span>Estética Automotiva</span>
+        </header>
+
+        <!-- ABA 1: AGENDA -->
+        <div id="semanal" class="tab-content">
+            <div class="card">
+                <div class="section-title">📅 Período da Semana</div>
+                <input type="date" id="mondayDate" onchange="atualizarSemana()">
+                <div id="dayGrid"></div>
+                <button class="btn" style="background:#ff4757; color:white; margin-top:10px; font-size:0.7rem; padding:8px" onclick="resetarAgendaParaAberta()">🔄 Resetar Toda Semana</button>
+            </div>
+            <div class="card">
+                <textarea id="outputSemanal" readonly></textarea>
+                <div style="display:flex; gap:10px">
+                    <button class="btn btn-copy" onclick="copiar('outputSemanal')">📋 Copiar Lista</button>
+                    <button class="btn" style="background:var(--accent); color:white" onclick="copiarStatusSemanal()">📅 Status</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 2: NOVO SERVIÇO -->
+        <div id="individual" class="tab-content" style="display:none">
+            <div class="card">
+                <div class="section-title">👤 Cliente & Veículo</div>
+                <input type="text" id="carInfo" placeholder="PLACA" oninput="buscarHistorico(this.value)">
+                <input type="text" id="clientName" placeholder="Nome do Cliente" oninput="gerarMensagemIndividual()">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <input type="date" id="serviceDate" onchange="gerarMensagemIndividual()">
+                    <input type="time" id="serviceTime" onchange="gerarMensagemIndividual()">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-title">🛠 Serviços</div>
+                <div class="services-grid">
+                    <label class="service-item"><input type="checkbox" class="svc" data-price="60" value="Lavagem Comercial" onchange="gerarMensagemIndividual()"> Lavagem Comercial</label>
+                    <label class="service-item"><input type="checkbox" class="svc" data-price="185" value="Lavagem Detalhada" onchange="gerarMensagemIndividual()"> Lavagem Detalhada</label>
+                    <label class="service-item"><input type="checkbox" class="svc" data-price="185" value="Higienização de Banco" onchange="gerarMensagemIndividual()"> Banco</label>
+                    <label class="service-item"><input type="checkbox" class="svc" data-price="285" value="Higienização Completa" onchange="gerarMensagemIndividual()"> Hig. Completa</label>
+                    <label class="service-item"><input type="checkbox" class="svc" data-price="385" value="Polimento c/ Enceramento" onchange="gerarMensagemIndividual()"> Polimento</label>
+                    <label class="service-item"><input type="checkbox" class="svc" data-price="585" value="Higienização + Polimento" onchange="gerarMensagemIndividual()"> Hig+Polimento</label>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-title">⚠️ Vistoria & Entrega</div>
+                <div class="inspection-grid" style="margin-bottom: 15px;">
+                    <label class="inspect-item"><input type="checkbox" class="insp" value="Riscos na pintura" onchange="gerarMensagemIndividual()"> Riscos</label>
+                    <label class="inspect-item"><input type="checkbox" class="insp" value="Amassados" onchange="gerarMensagemIndividual()"> Amassados</label>
+                    <label class="inspect-item"><input type="checkbox" class="insp" value="Rodas raladas" onchange="gerarMensagemIndividual()"> Rodas</label>
+                    <label class="inspect-item"><input type="checkbox" class="insp" value="Vidro trincado" onchange="gerarMensagemIndividual()"> Vidro</label>
+                </div>
+                <input type="text" id="linkFotos" placeholder="Link das Fotos (Opcional)" oninput="gerarMensagemIndividual()">
+            </div>
+
+            <div class="card">
+                <div id="totalDisplay" class="total-display">Total: R$ 0,00</div>
+                <button class="btn btn-ready" onclick="gerarMensagemPronto()">✨ GERAR AVISO DE PRONTO</button>
+                <textarea id="outputIndividual" readonly></textarea>
+                <div style="display:flex; gap:10px">
+                    <button class="btn btn-copy" onclick="copiarIndividual()">📋 Copiar e Salvar</button>
+                    <button class="btn" style="background:var(--accent); color:white" onclick="limparCampos()">🔄 Limpar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 3: HISTÓRICO -->
+        <div id="historico" class="tab-content" style="display:none">
+            <div class="card">
+                <div class="section-title">📋 Últimos Serviços Salvos</div>
+                <div id="listaHistorico"></div>
+                <button class="btn btn-reset" style="background:#333; color:white; width:100%; margin-top:20px" onclick="limparHistoricoTotal()">Apagar Histórico</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed-action">
+        <button class="btn btn-whatsapp" onclick="enviarWhatsApp()">📲 ENVIAR PARA WHATSAPP</button>
+    </div>
+
+    <script>
+        const MAP_LINK = "https://maps.app.goo.gl/KPY28spUTp2C3Xp58";
+        const dias = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+
+        function openTab(id) {
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).style.display = 'block';
+            event.currentTarget.classList.add('active');
+            if(id === 'historico') carregarAbaHistorico();
+        }
+
+        // --- INICIALIZAÇÃO E PERSISTÊNCIA DA AGENDA ---
+        function initApp() {
+            const grid = document.getElementById('dayGrid');
+            grid.innerHTML = dias.map((dia, i) => `
+                <div class="day-row">
+                    <div><div style="font-size:0.6rem; color:var(--text-sub)" id="date-${i}">--/--</div><strong>${dia}</strong></div>
+                    <select id="status-${i}" onchange="salvarAgendaManual()" style="width:130px; padding:5px; background:#2d2d2d; color:white; border-radius:5px">
+                        <option value="Aberta ✅">Aberta ✅</option>
+                        <option value="*Reservado* ❌">Reservado ❌</option>
+                        <option value="*A confirmar* ⏳">Confirmar ⏳</option>
+                    </select>
+                </div>`).join('');
+            
+            carregarAgendaSalva();
+        }
+
+        function salvarAgendaManual() {
+            const dadosAgenda = [];
+            for (let i = 0; i < 7; i++) {
+                dadosAgenda.push(document.getElementById(`status-${i}`).value);
+            }
+            localStorage.setItem('star_agenda_status', JSON.stringify(dadosAgenda));
+            localStorage.setItem('star_agenda_data', document.getElementById('mondayDate').value);
+            atualizarSemana();
+        }
+
+        function carregarAgendaSalva() {
+            const dataSalva = localStorage.getItem('star_agenda_data');
+            const statusSalvo = JSON.parse(localStorage.getItem('star_agenda_status'));
+
+            if (dataSalva) {
+                document.getElementById('mondayDate').value = dataSalva;
+            } else {
+                setProximaSegunda();
+            }
+
+            if (statusSalvo) {
+                statusSalvo.forEach((status, i) => {
+                    const el = document.getElementById(`status-${i}`);
+                    if(el) el.value = status;
+                });
+            }
+            atualizarSemana();
+        }
+
+        function resetarAgendaParaAberta() {
+            if(confirm("Deseja abrir todos os horários da semana?")) {
+                for (let i = 0; i < 7; i++) {
+                    document.getElementById(`status-${i}`).value = "Aberta ✅";
+                }
+                salvarAgendaManual();
+            }
+        }
+
+        function setProximaSegunda() {
+            const d = new Date();
+            d.setDate(d.getDate() + (1 + 7 - d.getDay()) % 7);
+            document.getElementById('mondayDate').value = d.toISOString().split('T')[0];
+        }
+
+        function atualizarSemana() {
+            const dataInput = document.getElementById('mondayDate').value;
+            if (!dataInput) return;
+            let base = new Date(dataInput + 'T12:00:00');
+            let textoSemana = "";
+            dias.forEach((dia, i) => {
+                const d = new Date(base); d.setDate(base.getDate() + i);
+                const dataF = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0');
+                const labelData = document.getElementById(`date-${i}`);
+                if(labelData) labelData.innerText = dataF;
+                textoSemana += `📝 *${dia} (${dataF})* – ${document.getElementById(`status-${i}`).value}\n`;
+            });
+            document.getElementById('outputSemanal').value = `📢 *AGENDA DA SEMANA*\n\nOlá! 👋 Horários disponíveis:\n\n${textoSemana}\n*STAR STUDIO CAR* 🚗✨`;
+        }
+
+        // --- GERAÇÃO DE MENSAGENS ---
+        function gerarMensagemIndividual() {
+            const nome = document.getElementById('clientName').value || "Cliente";
+            const carro = document.getElementById('carInfo').value || "Veículo";
+            const dataRaw = document.getElementById('serviceDate').value;
+            const hora = document.getElementById('serviceTime').value || "00:00";
+            let dataF = dataRaw ? new Date(dataRaw + 'T12:00:00').toLocaleDateString('pt-BR') : "--/--/--";
+
+            let total = 0;
+            const selecionados = Array.from(document.querySelectorAll('.svc:checked')).map(c => {
+                total += parseFloat(c.dataset.price);
+                return `• ${c.value}`;
+            });
+
+            const danos = Array.from(document.querySelectorAll('.insp:checked')).map(c => c.value);
+            document.getElementById('totalDisplay').innerText = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+
+            let texto = `Olá, *${nome}*! 👋\n\nConfirmamos seu agendamento na *STAR STUDIO CAR* ✅\n\n🚗 *Veículo/Placa:* ${carro}\n🗓 *Data:* ${dataF}\n⏰ *Horário:* ${hora}\n\n🛠 *Serviços:*\n${selecionados.join('\n') || '• A definir'}\n\n💰 *Valor:* R$ ${total.toFixed(2).replace('.', ',')}\n`;
+            if (danos.length > 0) texto += `\n⚠️ *VISTORIA:* ${danos.join(', ')}.\n`;
+            texto += `\n📍 *Localização:* ${MAP_LINK}\n\nLuis – *STAR STUDIO CAR* 🚗✨`;
+            document.getElementById('outputIndividual').value = texto;
+        }
+
+        function gerarMensagemPronto() {
+            const nome = document.getElementById('clientName').value || "Cliente";
+            const carro = document.getElementById('carInfo').value || "Veículo";
+            const link = document.getElementById('linkFotos').value;
+            const total = document.getElementById('totalDisplay').innerText;
+
+            let texto = `Seu carro está pronto, *${nome}*! ✨🚗\n\nFinalizamos os serviços no seu *${carro}*!\n\n${link ? `📸 *Veja as fotos do serviço:* ${link}\n` : ''}\n💰 *${total}*\n\nO veículo já está disponível para retirada.🌟\n\n📍 *Localização:* ${MAP_LINK}\n\nLuis – *STAR STUDIO CAR* 🚗✨`;
+            document.getElementById('outputIndividual').value = texto;
+            showToast("Mensagem de PRONTO gerada!");
+        }
+
+        // --- SISTEMA DE HISTÓRICO ---
+        function salvarNoHistorico() {
+            const placa = document.getElementById('carInfo').value.toUpperCase();
+            const nome = document.getElementById('clientName').value;
+            const total = document.getElementById('totalDisplay').innerText;
+            if(!placa || !nome) return;
+            let historico = JSON.parse(localStorage.getItem('star_history') || '[]');
+            historico.unshift({ placa, nome, total, data: new Date().toLocaleDateString('pt-BR') });
+            localStorage.setItem('star_history', JSON.stringify(historico.slice(0, 50)));
+        }
+
+        function buscarHistorico(placa) {
+            gerarMensagemIndividual();
+            if(placa.length < 3) return;
+            const historico = JSON.parse(localStorage.getItem('star_history') || '[]');
+            const clienteFiel = historico.find(h => h.placa.includes(placa.toUpperCase()));
+            if(clienteFiel) document.getElementById('clientName').value = clienteFiel.nome;
+        }
+
+        function carregarAbaHistorico() {
+            const lista = document.getElementById('listaHistorico');
+            const historico = JSON.parse(localStorage.getItem('star_history') || '[]');
+            lista.innerHTML = historico.map(h => `
+                <div class="history-item">
+                    <small>${h.data}</small><br>
+                    <strong>${h.placa}</strong> - ${h.nome} | <span style="color:var(--primary)">${h.total}</span>
+                </div>`).join('') || '<p style="text-align:center">Sem histórico.</p>';
+        }
+
+        function limparHistoricoTotal() {
+            if(confirm("Apagar todo o histórico de atendimentos?")) {
+                localStorage.removeItem('star_history');
+                carregarAbaHistorico();
+            }
+        }
+
+        // --- AUXILIARES ---
+        function copiar(id) {
+            const area = document.getElementById(id);
+            area.select();
+            document.execCommand('copy');
+            showToast("Copiado!");
+        }
+
+        function copiarIndividual() {
+            copiar('outputIndividual');
+            salvarNoHistorico();
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg; t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 2000);
+        }
+
+        function limparCampos() {
+            document.getElementById('clientName').value = "";
+            document.getElementById('carInfo').value = "";
+            document.getElementById('linkFotos').value = "";
+            document.querySelectorAll('.svc, .insp').forEach(c => c.checked = false);
+            gerarMensagemIndividual();
+        }
+
+        function copiarStatusSemanal() {
+            copiar('outputSemanal');
+            showToast("Lista da semana copiada!");
+        }
+
+        function enviarWhatsApp() {
+            const tab = document.querySelector('.tab-btn.active').innerText;
+            let id = tab.includes("AGENDA") ? 'outputSemanal' : 'outputIndividual';
+            if(tab.includes("NOVO")) salvarNoHistorico();
+            const txt = encodeURIComponent(document.getElementById(id).value);
+            window.open(`https://wa.me/?text=${txt}`, '_blank');
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
