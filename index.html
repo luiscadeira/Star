@@ -42,59 +42,287 @@
             position: relative;
         }
 
-        /* Mobile preview on desktop: center content and limit width */
-        .container {
-            max-width: 420px;
-            width: calc(100% - 40px);
-            margin: 18px auto;
-        }
-
-        .bg,
-        .overlay-b,
-        .overlay-tr,
-        .grid {
+        /* Backgrounds e Overlays */
+        .bg, .overlay-b, .overlay-tr, .grid {
             position: fixed;
             inset: 0;
-            z-index: 0;
+            z-index: -1; /* Garante que fiquem atrás de tudo */
         }
 
-        .bg {
-            background-position: center;
-            background-size: cover;
-            transition: opacity .6s, transform .6s;
+        .bg { 
+            background-position: center; 
+            background-size: cover; 
+            transition: opacity .6s; 
         }
-
-        .overlay-b {
-            background-image: linear-gradient(to bottom, rgba(0, 0, 0, .75), rgba(0, 0, 0, .65), rgba(0, 0, 0, .85));
+        
+        .overlay-b { 
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, .8), rgba(0, 0, 0, .6), rgba(0, 0, 0, .9)); 
         }
-
+        
         .overlay-tr {
             background-image: linear-gradient(to top right, rgba(245, 158, 11, .25), transparent, rgba(234, 179, 8, .2));
         }
-
-        .grid {
-            opacity: .06;
-            background-image:
-                linear-gradient(rgba(255, 255, 255, .08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, .08) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
+        
+        .grid { 
+            opacity: .06; 
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, .08) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(255, 255, 255, .08) 1px, transparent 1px); 
+            background-size: 50px 50px; 
         }
 
+        /* Container Principal */
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 15px;
+            padding-bottom: 120px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* CABEÇALHO */
+        header {
+            text-align: center;
+            margin: 20px 0 30px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header img {
+            width: 350px;
+            height: auto;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.5));
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            font-weight: 900;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        header .subtitle {
+            font-size: 0.65rem;
+            color: #f59e0b;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        header .badge {
+            font-size: rem;
+            color: #f5d47a;
+            padding: 5px 15px;
+            border-radius: 999px;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        /* Navegação */
         .nav-tabs {
             display: flex;
-            background: rgba(0, 0, 0, .4);
-            padding: 8px 6px;
-            gap: 4px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            padding: 8px;
+            gap: 6px;
+            margin: 0 auto 20px;
+            border-radius: 12px;
+            max-width: 99%;
+            justify-content: center;
+            flex-wrap: wrap;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
         }
 
         .tab-highlight {
             display: none;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px 6px;
+            border: none;
+            background: transparent;
+            color: #8b8b8b;
+            font-weight: 600;
+            font-size: 0.65rem;
+            border-radius: 8px;
+            transition: 0.25s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: #000;
+            font-weight: 600;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
+            position: relative;
+            z-index: 2;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            box-shadow: 0 0 10px #fff, 0 0 20px #fff;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        .tab-btn:hover {
+            background: rgba(50, 50, 50, 0.8);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tab-btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .tab-content { 
+            display: none; 
+        }
+        
+        .tab-content.active { 
+            display: block; 
+            animation: fadeIn 0.3s ease; 
+        }
+
+        @keyframes fadeIn { 
+            from { 
+                opacity: 0; 
+                transform: translateY(10px); 
+            } 
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            } 
+        }
+
+        /* Cards e Inputs */
+        .card {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            padding: 18px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .section-title { 
+            font-size: 0.75rem; 
+            color: var(--text-sub); 
+            text-transform: uppercase; 
+            margin-bottom: 12px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+
+        input, select, textarea {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 10px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        /* Botão WhatsApp Fixo */
+        .fixed-action {
+            position: fixed;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+            padding: 0 15px;
+            pointer-events: none;
+        }
+        
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            pointer-events: auto;
+            animation: pulse-whatsapp 2s infinite;
+            border: 2px solid #fff;
+        }
+        
+        .btn-whatsapp:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
+        }
+        
+        .btn-whatsapp:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(37, 211, 102, 0.4);
+        }
+        
+        @keyframes pulse-whatsapp {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+        
+        .btn-whatsapp::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        
+        .btn-whatsapp:hover::before {
+            transform: translateX(100%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4); 
         }
 
         .tab-btn {
@@ -737,23 +965,27 @@
     <div class="overlay-b"></div>
     <div class="overlay-tr"></div>
     <div class="grid"></div>
-
-    <nav class="nav-tabs">
-        <div class="tab-highlight"></div>
-        <button class="tab-btn active" onclick="openTab('semanal', this)">📅 AGENDA</button>
-        <button class="tab-btn" onclick="openTab('individual', this)">🛠 NOVO SERVIÇO</button>
-        <button class="tab-btn" onclick="openTab('historico', this)">🗂 HISTÓRICO</button>
-        <button class="tab-btn" onclick="openTab('config', this)">⚙️ CONFIG</button>
-    </nav>
+    
+    <header>
+        <!-- Logo do site -->
+        
+            <img src="logo.png" alt="Logo STAR STUDIO CAR"
+               >
+          
+        
+        <span class="badge">ESTÉTICA AUTOMOTIVA</span>
+    </header>
 
     <div class="container">
-        <header>
-            <img src="/logo.png"
-                alt="Logo STAR STUDIO CAR">
-            <h1>STAR STUDIO CAR</h1>
-            <span class="subtitle">TRATAMENTO AUTOMOTIVO</span>
-            <span>ESTÉTICA AUTOMOTIVA</span>
-        </header>
+       
+
+        <nav class="nav-tabs">
+            <div class="tab-highlight"></div>
+            <button class="tab-btn active" onclick="openTab('semanal', this)">📅 AGENDA</button>
+            <button class="tab-btn" onclick="openTab('individual', this)">🛠 NOVO SERVIÇO</button>
+            <button class="tab-btn" onclick="openTab('historico', this)">🗂 HISTÓRICO</button>
+            <button class="tab-btn" onclick="openTab('config', this)">⚙️ CONFIG</button>
+        </nav>
 
         <!-- ABA 1: AGENDA -->
         <div id="semanal" class="tab-content active">
@@ -1106,9 +1338,9 @@
             const link = document.getElementById('linkFotos').value;
             const total = item.total;
             const MAP_LINK = "https://maps.app.goo.gl/KPY28spUTp2C3Xp58";
-            
+
             let texto = `Seu carro está pronto, *${nome}*! ✨🚗\n\nFinalizamos os serviços no seu *${placa}*!\n\n${link ? `📸 *Veja as fotos do serviço:* ${link}\n` : ''}💰 *${total}*\n\nO veículo já está disponível para retirada. 🌟\n\n📍 *Localização:* ${MAP_LINK}\n\nLuis – *STAR STUDIO CAR* 🚗✨`;
-            
+
             const txt = encodeURIComponent(texto);
             window.open(`https://wa.me/?text=${txt}`, '_blank');
             showToast("WhatsApp aberto com mensagem de PRONTO");
@@ -1364,7 +1596,7 @@ END:VCALENDAR`;
         window.onload = initApp;
         // register service worker for offline / install prompts
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').catch(() => {/* ignore */});
+            navigator.serviceWorker.register('/sw.js').catch(() => {/* ignore */ });
         }
     </script>
 </body>
