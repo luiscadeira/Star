@@ -1,11 +1,15 @@
-const CACHE_NAME = 'star-studio-v1';
+const CACHE_NAME = 'star-studio-v2';
 const ASSETS = [
-    '/',
-    '/index.html',
-    '/outro/index.html',
-    '/manifest.json',
-    '/logo.png',
-    '/Icon.png'
+    './',
+    './index.html',
+    './outro/index.html',
+    './manifest.json',
+    './logo.png',
+    './Icon.png',
+    './css/styles.css',
+    './js/script.js',
+    'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css',
+    'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js'
 ];
 
 self.addEventListener('install', (event) => {
