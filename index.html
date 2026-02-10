@@ -957,6 +957,171 @@
                 font-size: 18px;
                 margin-left: 8px;
             }
+
+            /* History Section Styles */
+            .history-section {
+                margin: 20px 0;
+            }
+
+            .history-item {
+                background: #1e1e1e;
+                border-radius: 12px;
+                padding: 16px;
+                margin-bottom: 12px;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .history-item:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .history-item::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: 4px;
+                background: linear-gradient(to bottom, #f59e0b, #fbbf24);
+            }
+
+            .history-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 8px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            }
+
+            .history-client {
+                font-weight: 700;
+                color: #ffffff;
+                font-size: 1.1rem;
+            }
+
+            .history-date {
+                font-size: 0.85rem;
+                color: #d1d5db;
+                background: rgba(255, 255, 255, 0.1);
+                padding: 2px 8px;
+                border-radius: 10px;
+                font-weight: 500;
+            }
+
+            .history-vehicle {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin: 8px 0;
+                color: #9ca3af;
+                font-size: 0.95rem;
+            }
+
+            .history-vehicle span {
+                background: rgba(255, 255, 255, 0.1);
+                padding: 2px 8px;
+                border-radius: 6px;
+                font-weight: 600;
+                color: #e5e7eb;
+            }
+
+            .history-services {
+                margin: 12px 0;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+            .service-tag {
+                background: rgba(245, 158, 11, 0.2);
+                color: #fbbf24;
+                padding: 4px 10px;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                font-weight: 500;
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                border: 1px solid rgba(245, 158, 11, 0.3);
+            }
+
+            .history-total {
+                margin-top: 12px;
+                padding-top: 8px;
+                border-top: 1px dashed rgba(255, 255, 255, 0.1);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .total-amount {
+                font-weight: 700;
+                color: #f59e0b;
+                font-size: 1.1rem;
+            }
+
+            .history-actions {
+                display: flex;
+                gap: 8px;
+                margin-top: 12px;
+            }
+
+            .btn-history {
+                flex: 1;
+                padding: 8px 12px;
+                border: none;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: 0.85rem;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                transition: all 0.2s;
+            }
+
+            .btn-whatsapp {
+                background: #25D366;
+                color: white;
+            }
+
+            .btn-whatsapp:hover {
+                background: #128C7E;
+            }
+
+            .btn-delete {
+                background: #fef2f2;
+                color: #dc2626;
+                border: 1px solid #fecaca;
+            }
+
+            .btn-delete:hover {
+                background: #fee2e2;
+            }
+
+            /* Responsive Design */
+            @media (max-width: 600px) {
+                .history-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 6px;
+                }
+                
+                .history-date {
+                    align-self: flex-start;
+                }
+                
+                .history-actions {
+                    flex-direction: column;
+                }
+            }
     </style>
 </head>
 
@@ -1014,9 +1179,6 @@
             <div class="card">
                 <div class="section-title">👤 Cliente & Veículo</div>
                 <input type="text" id="clientName" placeholder="CLIENTE" oninput="gerarMensagemIndividual()">
-                <input type="tel" id="clientPhone" placeholder="TELEFONE (opcional)"
-                    oninput="gerarMensagemIndividual()">
-
                 <input type="text" id="carInfo" placeholder="VEICULO" oninput="buscarHistorico(this.value)">
                 <div style="display:flex; gap:10px">
                     <input type="date" id="serviceDate" onchange="gerarMensagemIndividual()">
