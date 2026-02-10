@@ -1,0 +1,20 @@
+{
+    "name": "STAR STUDIO CAR",
+    "short_name": "StarStudio",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#0a0a0a",
+    "theme_color": "#f59e0b",
+    "icons": [
+        {
+            "src": "Icon.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "Icon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

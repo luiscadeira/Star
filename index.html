@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>STAR STUDIO CAR - BUSINESS</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#f59e0b">
+    <!-- Apple -->
+    <link rel="apple-touch-icon" href="/Icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style>
         :root {
             --primary: #25D366;
@@ -34,6 +40,13 @@
             padding: 0;
             min-height: 100vh;
             position: relative;
+        }
+
+        /* Mobile preview on desktop: center content and limit width */
+        .container {
+            max-width: 420px;
+            width: calc(100% - 40px);
+            margin: 18px auto;
         }
 
         .bg,
@@ -70,72 +83,47 @@
 
         .nav-tabs {
             display: flex;
-            background: rgba(0, 0, 0, .35);
-            padding: 8px;
-            gap: 5px;
+            background: rgba(0, 0, 0, .4);
+            padding: 8px 6px;
+            gap: 4px;
             position: sticky;
             top: 0;
             z-index: 1000;
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, .08);
-            position: sticky;
-            top: 0;
-            /* host for moving highlight */
-            position: sticky;
-        }
-
-        .nav-tabs {
-            position: sticky;
-        }
-
-        .nav-tabs::after {
-            content: "";
         }
 
         .tab-highlight {
-            position: absolute;
-            top: 8px;
-            left: 0;
-            height: 40px;
-            border-radius: 12px;
-            background: linear-gradient(90deg, #f59e0b, #eab308);
-            box-shadow: 0 8px 24px rgba(245, 158, 11, .35);
-            transition: transform .35s ease, width .35s ease, opacity .2s;
-            opacity: .95;
-            z-index: 1;
+            display: none;
         }
 
         .tab-btn {
             flex: 1;
-            padding: 12px 5px;
+            padding: 10px 6px;
             border: none;
             background: transparent;
-            color: var(--text-sub);
-            font-weight: 700;
-            font-size: 0.7rem;
-            border-radius: 10px;
-            transition: 0.3s;
+            color: #8b8b8b;
+            font-weight: 600;
+            font-size: 0.65rem;
+            border-radius: 8px;
+            transition: 0.25s;
             cursor: pointer;
             position: relative;
             overflow: hidden;
             z-index: 2;
-            /* above highlight */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .tab-btn.active {
-            background: linear-gradient(135deg, rgba(245, 158, 11, .25), rgba(234, 179, 8, .2));
-            color: #fff;
-            box-shadow: 0 4px 24px rgba(245, 158, 11, .35);
+            background: linear-gradient(90deg, #f59e0b, #eab308);
+            color: #000;
+            box-shadow: 0 4px 16px rgba(245, 158, 11, .3);
+            font-weight: 700;
         }
 
         .tab-btn.active::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: 10px;
-            background: linear-gradient(90deg, rgba(245, 158, 11, .6), rgba(234, 179, 8, .6));
-            opacity: .25;
-            filter: blur(8px);
+            display: none;
         }
 
         .tab-content {
@@ -199,34 +187,51 @@
 
             header {
                 text-align: center;
-                margin: 20px 0;
+                margin: 16px 0 20px 0;
+                padding: 0;
+            }
+
+            header img {
+                height: 60px;
+                border-radius: 8px;
+                display: block;
+                margin: 0 auto 10px;
+                filter: drop-shadow(0 0 20px rgba(245, 158, 11, .6));
+                animation: logoPulse 2s infinite;
             }
 
             header h1 {
-                font-size: 2rem;
-                margin: 0;
+                font-size: 1.8rem;
+                margin: 4px 0 0 0;
                 font-weight: 900;
-                background: linear-gradient(90deg, #f59e0b, #eab308);
-                -webkit-background-clip: text;
-                background-clip: text;
-                color: transparent;
-                text-shadow: 0 0 20px rgba(245, 158, 11, .5);
-                animation: glow 3s infinite;
+                color: white;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
             }
 
-            header span {
-                font-size: 0.7rem;
+            header .subtitle {
+                font-size: 0.65rem;
                 color: #f5d47a;
                 text-transform: uppercase;
                 letter-spacing: 2px;
-                font-weight: 900;
+                font-weight: 700;
+                display: block;
+                margin-top: 2px;
+                margin-bottom: 12px;
+            }
+
+            header span {
+                font-size: 0.65rem;
+                color: #f5d47a;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                font-weight: 700;
                 display: inline-block;
-                padding: 8px 16px;
+                padding: 8px 20px;
                 border-radius: 999px;
-                background: linear-gradient(135deg, rgba(245, 158, 11, .2), rgba(234, 179, 8, .2));
-                border: 1px solid rgba(245, 158, 11, .35);
-                box-shadow: 0 0 30px rgba(245, 158, 11, .35);
-                animation: badgeGlow 2s infinite;
+                background: transparent;
+                border: 2px solid rgba(245, 158, 11, .6);
+                box-shadow: inset 0 0 20px rgba(245, 158, 11, .1), 0 0 15px rgba(245, 158, 11, .25);
             }
 
             .card {
@@ -655,6 +660,73 @@
                     font-size: 0.75rem;
                 }
             }
+
+            /* CONFIG tab styles */
+            .config-card {
+                background: linear-gradient(180deg, rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.5));
+                border: 1px solid rgba(255, 255, 255, 0.04);
+                padding: 14px;
+                border-radius: 12px;
+                margin-bottom: 12px;
+            }
+
+            .cfg-row {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+
+            .icon-box {
+                width: 48px;
+                height: 48px;
+                border-radius: 8px;
+                background: #1a1a1a;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
+                border: 1px solid #222
+            }
+
+            .price-box {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .price-box .currency {
+                color: #f5c04a;
+                font-weight: 800;
+            }
+
+            .cfg-price {
+                background: #222;
+                color: #fff;
+                border: 1px solid #333;
+                padding: 10px;
+                border-radius: 8px;
+                width: 120px;
+            }
+
+            .btn-save {
+                background: linear-gradient(90deg, #f59e0b, #eab308);
+                color: #000;
+                padding: 12px 16px;
+                border-radius: 12px;
+                border: none;
+                width: 100%;
+                font-weight: 800;
+                box-shadow: 0 8px 20px rgba(234, 153, 0, 0.2);
+            }
+
+            .trash-btn {
+                background: transparent;
+                border: none;
+                color: #ff6b6b;
+                font-size: 18px;
+                margin-left: 8px;
+            }
     </style>
 </head>
 
@@ -671,14 +743,16 @@
         <button class="tab-btn active" onclick="openTab('semanal', this)">📅 AGENDA</button>
         <button class="tab-btn" onclick="openTab('individual', this)">🛠 NOVO SERVIÇO</button>
         <button class="tab-btn" onclick="openTab('historico', this)">🗂 HISTÓRICO</button>
+        <button class="tab-btn" onclick="openTab('config', this)">⚙️ CONFIG</button>
     </nav>
 
     <div class="container">
         <header>
-            <img src="logo.png" alt="Logo STAR STUDIO CAR"
-                style="height:56px; border-radius:8px; display:block; margin:0 auto 8px; filter: drop-shadow(0 0 20px rgba(245, 158, 11, .6)); animation: logoPulse 2s infinite;">
+            <img src="/logo.png"
+                alt="Logo STAR STUDIO CAR">
             <h1>STAR STUDIO CAR</h1>
-            <span>Estética Automotiva</span>
+            <span class="subtitle">TRATAMENTO AUTOMOTIVO</span>
+            <span>ESTÉTICA AUTOMOTIVA</span>
         </header>
 
         <!-- ABA 1: AGENDA -->
@@ -706,6 +780,8 @@
             <div class="card">
                 <div class="section-title">👤 Cliente & Veículo</div>
                 <input type="text" id="clientName" placeholder="CLIENTE" oninput="gerarMensagemIndividual()">
+                <input type="tel" id="clientPhone" placeholder="TELEFONE (opcional)"
+                    oninput="gerarMensagemIndividual()">
 
                 <input type="text" id="carInfo" placeholder="VEICULO" oninput="buscarHistorico(this.value)">
                 <div style="display:flex; gap:10px">
@@ -716,61 +792,8 @@
 
             <div class="card">
                 <div class="section-title">🛠 Serviços</div>
-                <div class="services-grid">
-                    <label class="service-item">
-                        <input type="checkbox" class="svc" data-price="60" value="Lavagem Comercial"
-                            onchange="gerarMensagemIndividual()">
-                        <div class="svc-icon">🧼</div>
-                        <div class="svc-info">
-                            <span class="svc-title">Lavagem Comercial</span>
-                            <span class="svc-price">R$ 60,00</span>
-                        </div>
-                    </label>
-                    <label class="service-item">
-                        <input type="checkbox" class="svc" data-price="185" value="Lavagem Detalhada"
-                            onchange="gerarMensagemIndividual()">
-                        <div class="svc-icon">✨</div>
-                        <div class="svc-info">
-                            <span class="svc-title">Lavagem Detalhada</span>
-                            <span class="svc-price">R$ 185,00</span>
-                        </div>
-                    </label>
-                    <label class="service-item">
-                        <input type="checkbox" class="svc" data-price="185" value="Higienização de Banco"
-                            onchange="gerarMensagemIndividual()">
-                        <div class="svc-icon">🪑</div>
-                        <div class="svc-info">
-                            <span class="svc-title">Higienização de Banco</span>
-                            <span class="svc-price">R$ 185,00</span>
-                        </div>
-                    </label>
-                    <label class="service-item">
-                        <input type="checkbox" class="svc" data-price="285" value="Higienização Completa"
-                            onchange="gerarMensagemIndividual()">
-                        <div class="svc-icon">🧽</div>
-                        <div class="svc-info">
-                            <span class="svc-title">Higienização Completa</span>
-                            <span class="svc-price">R$ 285,00</span>
-                        </div>
-                    </label>
-                    <label class="service-item">
-                        <input type="checkbox" class="svc" data-price="385" value="Polimento c/ Enceramento"
-                            onchange="gerarMensagemIndividual()">
-                        <div class="svc-icon">💎</div>
-                        <div class="svc-info">
-                            <span class="svc-title">Polimento c/ Enceramento</span>
-                            <span class="svc-price">R$ 385,00</span>
-                        </div>
-                    </label>
-                    <label class="service-item">
-                        <input type="checkbox" class="svc" data-price="585" value="Higienização + Polimento"
-                            onchange="gerarMensagemIndividual()">
-                        <div class="svc-icon">🏆</div>
-                        <div class="svc-info">
-                            <span class="svc-title">Higienização + Polimento</span>
-                            <span class="svc-price">R$ 585,00</span>
-                        </div>
-                    </label>
+                <div class="services-grid" id="servicesGrid">
+                    <!-- Serviços serão renderizados dinamicamente a partir do armazenamento -->
                 </div>
             </div>
 
@@ -815,6 +838,26 @@
                     onclick="limparHistoricoTotal()">Apagar Histórico</button>
             </div>
         </div>
+
+        <!-- ABA 4: CONFIG -->
+        <div id="config" class="tab-content">
+            <div class="card">
+                <div class="section-title">⚙️ Configurações & Editor</div>
+                <p style="color:var(--text-sub); font-size:0.9rem">Editar serviços e preços (salvo no navegador).</p>
+                <div style="display:flex; gap:10px; margin-top:8px">
+                    <button class="btn" style="background:#333; color:white" onclick="renderConfigServices()">🔄
+                        Recarregar</button>
+                </div>
+                <div id="configServices" style="margin-top:12px"></div>
+                <div style="margin-top:12px; display:flex; gap:8px">
+                    <input id="newServiceName" placeholder="Novo serviço"
+                        style="flex:1; padding:8px; border-radius:8px; background:#222; color:white; border:1px solid #333">
+                    <input id="newServicePrice" placeholder="Preço"
+                        style="width:120px; padding:8px; border-radius:8px; background:#222; color:white; border:1px solid #333">
+                    <button class="btn btn-copy" onclick="addNewService()">➕ Adicionar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="fixed-action">
@@ -828,7 +871,8 @@
         const backgrounds = {
             semanal: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=1920&q=70&fm=webp",
             individual: "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=1920&q=70&fm=webp",
-            historico: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1920&q=70&fm=webp"
+            historico: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1920&q=70&fm=webp",
+            config: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1920&q=70&fm=webp"
         };
         function setBackground(id) {
             const el = document.querySelector('.bg');
@@ -884,6 +928,9 @@
             setBackground('semanal');
             const activeBtn = document.querySelector('.tab-btn.active');
             updateHighlight(activeBtn);
+            // render services and config UI
+            if (typeof renderServicesGrid === 'function') renderServicesGrid();
+            if (typeof renderConfigServices === 'function') renderConfigServices();
             window.addEventListener('resize', () => updateHighlight(document.querySelector('.tab-btn.active')));
         }
 
@@ -1008,7 +1055,7 @@
         function salvarNoHistorico() {
             const placa = document.getElementById('carInfo').value.toUpperCase();
             const nome = document.getElementById('clientName').value;
-            const total = document.getElementById('totalDisplay').innerText;
+            const total = document.getElementById('totalValue').innerText;
             if (!placa || !nome) return;
             let historico = JSON.parse(localStorage.getItem('star_history') || '[]');
             historico.unshift({ placa, nome, total, data: new Date().toLocaleDateString('pt-BR') });
@@ -1026,11 +1073,45 @@
         function carregarAbaHistorico() {
             const lista = document.getElementById('listaHistorico');
             const historico = JSON.parse(localStorage.getItem('star_history') || '[]');
-            lista.innerHTML = historico.map(h => `
+            lista.innerHTML = historico.map((h, idx) => `
             <div class="history-item">
-                <small>${h.data}</small><br>
-                <strong>${h.placa}</strong> - ${h.nome} | <span style="color:var(--primary)">${h.total}</span>
+                <div style="display:flex; justify-content:space-between; align-items:start; gap:10px">
+                    <div style="flex:1">
+                        <small>${h.data}</small><br>
+                        <strong>${h.placa}</strong> - ${h.nome} | <span style="color:var(--primary)">${h.total}</span>
+                    </div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end">
+                        <button class="btn btn-small" onclick="enviarProntoWhatsApp('${h.nome}', '${h.placa}', ${idx})" style="padding:6px 10px; font-size:0.9rem; background:#128C7E; border:none; cursor:pointer; border-radius:6px; color:white">📲 Pronto</button>
+                        <button class="btn btn-small" onclick="deletarDoHistorico(${idx})" style="padding:6px 10px; font-size:0.9rem; background:#ff4757; border:none; cursor:pointer; border-radius:6px; color:white">🗑️ Excluir</button>
+                    </div>
+                </div>
             </div>`).join('') || '<p style="text-align:center; color:gray">Sem histórico.</p>';
+        }
+
+        function deletarDoHistorico(idx) {
+            if (confirm("Excluir este item do histórico?")) {
+                let historico = JSON.parse(localStorage.getItem('star_history') || '[]');
+                historico.splice(idx, 1);
+                localStorage.setItem('star_history', JSON.stringify(historico));
+                carregarAbaHistorico();
+                showToast("Item removido");
+            }
+        }
+
+        function enviarProntoWhatsApp(nome, placa, idx) {
+            let historico = JSON.parse(localStorage.getItem('star_history') || '[]');
+            const item = historico[idx];
+            if (!item) return;
+
+            const link = document.getElementById('linkFotos').value;
+            const total = item.total;
+            const MAP_LINK = "https://maps.app.goo.gl/KPY28spUTp2C3Xp58";
+            
+            let texto = `Seu carro está pronto, *${nome}*! ✨🚗\n\nFinalizamos os serviços no seu *${placa}*!\n\n${link ? `📸 *Veja as fotos do serviço:* ${link}\n` : ''}💰 *${total}*\n\nO veículo já está disponível para retirada. 🌟\n\n📍 *Localização:* ${MAP_LINK}\n\nLuis – *STAR STUDIO CAR* 🚗✨`;
+            
+            const txt = encodeURIComponent(texto);
+            window.open(`https://wa.me/?text=${txt}`, '_blank');
+            showToast("WhatsApp aberto com mensagem de PRONTO");
         }
 
         function limparHistoricoTotal() {
@@ -1137,7 +1218,154 @@ END:VCALENDAR`;
             URL.revokeObjectURL(a.href);
         }
 
+        // --- Serviços dinâmicos e configurações (localStorage) ---
+        const DEFAULT_SERVICES = [
+            { id: 's1', name: 'Lavagem Comercial', price: 60, icon: '🧼' },
+            { id: 's2', name: 'Lavagem Detalhada', price: 185, icon: '✨' },
+            { id: 's3', name: 'Higienização de Banco', price: 185, icon: '🪑' },
+            { id: 's4', name: 'Higienização Completa', price: 285, icon: '🧽' },
+            { id: 's5', name: 'Polimento c/ Enceramento', price: 385, icon: '💎' },
+            { id: 's6', name: 'Higienização + Polimento', price: 585, icon: '🏆' }
+        ];
+
+        function getServices() {
+            try {
+                return JSON.parse(localStorage.getItem('star_services')) || DEFAULT_SERVICES.slice();
+            } catch (e) { return DEFAULT_SERVICES.slice(); }
+        }
+
+        function saveServices(arr) {
+            localStorage.setItem('star_services', JSON.stringify(arr));
+            // attempt to save to server if endpoint exists
+            postServicesIfAvailable(arr);
+        }
+
+        async function postServicesIfAvailable(arr) {
+            try {
+                const resp = await fetch('/save_services.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(arr)
+                });
+                if (resp.ok) {
+                    showToast('Alteração salva no servidor');
+                    return true;
+                }
+            } catch (e) {
+                // ignore network errors -> fallback to local
+            }
+            showToast('Alteração salva localmente');
+            return false;
+        }
+
+        function renderServicesGrid() {
+            const services = getServices();
+            const container = document.getElementById('servicesGrid');
+            if (!container) return;
+            container.innerHTML = services.map(s => `
+                <label class="service-item">
+                    <input type="checkbox" class="svc" data-price="${s.price}" value="${s.name}" onchange="gerarMensagemIndividual()">
+                    <div class="svc-icon">${s.icon}</div>
+                    <div class="svc-info">
+                        <span class="svc-title">${s.name}</span>
+                        <span class="svc-price">${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(s.price)}</span>
+                    </div>
+                </label>
+            `).join('');
+        }
+
+        function renderConfigServices() {
+            const services = getServices();
+            const cfg = document.getElementById('configServices');
+            if (!cfg) return;
+            cfg.innerHTML = services.map(s => `
+                <div class="config-card">
+                    <div style="margin-bottom:8px"><strong>${s.name}</strong></div>
+                    <div class="cfg-row">
+                        <div class="icon-box">${s.icon}</div>
+                        <div style="flex:1">
+                            <div class="price-box">
+                                <span class="currency">R$</span>
+                                <input data-id="${s.id}" class="cfg-price" value="${Number(s.price).toFixed(2).replace('.', ',')}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:10px; display:flex; gap:8px">
+                        <button class="btn-save" onclick="saveServiceEdits('${s.id}')">💾 Salvar</button>
+                        <button class="trash-btn" onclick="deleteService('${s.id}')">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+            // attach input formatting/validation for prices
+            attachPriceFormatting();
+        }
+
+        function saveServiceEdits(id) {
+            const services = getServices();
+            const priceEl = document.querySelector(`.cfg-price[data-id='${id}']`);
+            const svc = services.find(s => s.id === id);
+            if (!svc) return;
+            // price may be formatted with comma
+            const raw = priceEl ? priceEl.value.replace(/\./g, '').replace(',', '.') : '';
+            const p = parseFloat(raw);
+            if (!isNaN(p)) svc.price = p;
+            saveServices(services);
+            renderServicesGrid();
+            renderConfigServices();
+        }
+
+        function addNewService() {
+            const name = document.getElementById('newServiceName').value.trim();
+            const price = parseFloat(document.getElementById('newServicePrice').value);
+            if (!name || isNaN(price)) { alert('Informe nome e preço válidos'); return; }
+            const services = getServices();
+            const id = 's' + Date.now();
+            services.push({ id, name, price, icon: '🛠' });
+            saveServices(services);
+            document.getElementById('newServiceName').value = '';
+            document.getElementById('newServicePrice').value = '';
+            renderServicesGrid(); renderConfigServices();
+        }
+
+        function attachPriceFormatting() {
+            // allow numeric input and format to 2 decimals on blur
+            document.querySelectorAll('.cfg-price').forEach(el => {
+                el.addEventListener('input', (e) => {
+                    // keep digits, comma and dot
+                    e.target.value = e.target.value.replace(/[^0-9.,]/g, '');
+                });
+                el.addEventListener('blur', (e) => {
+                    const v = e.target.value.replace(/\./g, '').replace(',', '.');
+                    const n = parseFloat(v);
+                    if (isNaN(n)) e.target.value = '';
+                    else e.target.value = Number(n.toFixed(2)).toString().replace('.', ',');
+                });
+            });
+            const newPrice = document.getElementById('newServicePrice');
+            if (newPrice) {
+                newPrice.addEventListener('input', (e) => { e.target.value = e.target.value.replace(/[^0-9.,]/g, ''); });
+                newPrice.addEventListener('blur', (e) => {
+                    const v = e.target.value.replace(',', '.');
+                    const n = parseFloat(v);
+                    if (isNaN(n)) e.target.value = '';
+                    else e.target.value = Number(n.toFixed(2));
+                });
+            }
+        }
+
+        function deleteService(id) {
+            if (!confirm('Remover este serviço?')) return;
+            let services = getServices();
+            services = services.filter(s => s.id !== id);
+            saveServices(services);
+            renderServicesGrid(); renderConfigServices();
+        }
+
         window.onload = initApp;
+        // register service worker for offline / install prompts
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {/* ignore */});
+        }
     </script>
 </body>
 
