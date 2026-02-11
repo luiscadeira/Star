@@ -875,8 +875,8 @@ END:VCALENDAR`;
                 // Reset form
                 resetForm();
                 
-                // Update services list
-                renderServicesGrid().then(() => renderConfigServices());
+                // Update services list - only render the grid, config will update automatically
+                await renderServicesGrid();
                 
             } catch (error) {
                 console.error('Error saving service:', error);
@@ -984,8 +984,8 @@ END:VCALENDAR`;
             // Carrega serviços do servidor ao iniciar
             try {
                 const services = await getServices(false); // false para forçar atualização do servidor
+                // Renderiza apenas a grade de serviços, a configuração será carregada quando necessário
                 await renderServicesGrid();
-                await renderConfigServices();
             } catch (error) {
                 console.error('Erro ao carregar serviços iniciais:', error);
             }
