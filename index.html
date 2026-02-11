@@ -251,7 +251,7 @@
         }
 
         // --- INICIALIZAÇÃO E PERSISTÊNCIA DA AGENDA ---
-        function initApp() {
+        function initAgenda() {
             const grid = document.getElementById('dayGrid');
             if (grid) {
                 grid.innerHTML = dias.map((dia, i) => `
@@ -272,10 +272,6 @@
             setBackground('semanal');
             const activeBtn = document.querySelector('.tab-btn.active');
             updateHighlight(activeBtn);
-            // render services and config UI
-            if (typeof renderServicesGrid === 'function') renderServicesGrid().then(() => {
-                if (typeof renderConfigServices === 'function') renderConfigServices();
-            });
             window.addEventListener('resize', () => updateHighlight(document.querySelector('.tab-btn.active')));
         }
 
@@ -993,6 +989,9 @@ END:VCALENDAR`;
 
         // Inicialização da aplicação
         async function initApp() {
+            // Inicializa a agenda e os dias da semana
+            initAgenda();
+
             // Limpa duplicatas existentes por nome antes de renderizar
             try {
                 const services = await getServices();
