@@ -3,9 +3,7 @@ const BASE_PATH = '/Star';
 const ASSETS = [
     `${BASE_PATH}/`,
     `${BASE_PATH}/index.html`,
-    `${BASE_PATH}/outro/index.html`,
     `${BASE_PATH}/manifest.json`,
-    `${BASE_PATH}/Icon.png`,
     `${BASE_PATH}/Icon.png`,
     `${BASE_PATH}/styles.css`,
     'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css',

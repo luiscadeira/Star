@@ -15,7 +15,7 @@
 @media all and (display-mode: standalone) {
     /* Adiciona um fundo mais bonito */
     body {
-        background-color: #212121;
+        background-color: #666666;
         transition: background-color 0.3s ease;
     }
     
@@ -36,13 +36,13 @@
         transform: translateX(-50%);
         padding: 12px 24px;
         background-color: #f59e0b;
-        color: #000;
+        color: #636262;
         border: none;
         border-radius: 25px;
         font-size: 16px;
         font-weight: bold;
         cursor: pointer;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 12px rgba(148, 147, 147, 0.2);
         transition: all 0.3s ease;
         z-index: 1000;
     }
