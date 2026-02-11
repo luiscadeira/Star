@@ -5,7 +5,7 @@ const ASSETS = [
     `${BASE_PATH}/index.html`,
     `${BASE_PATH}/outro/index.html`,
     `${BASE_PATH}/manifest.json`,
-    `${BASE_PATH}/logo.png`,
+    `${BASE_PATH}/Icon.png`,
     `${BASE_PATH}/Icon.png`,
     `${BASE_PATH}/styles.css`,
     'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css',
@@ -109,8 +109,8 @@ self.addEventListener('push', (event) => {
     const title = 'Star Studio Car';
     const options = {
         body: event.data.text(),
-        icon: '/Star/logo.png',
-        badge: '/Star/logo.png',
+        icon: '/Star/Icon.png',
+        badge: '/Star/Icon.png',
         vibrate: [100, 50, 100],
         data: { primaryKey: 1 }
     };
