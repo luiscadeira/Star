@@ -380,7 +380,7 @@
             const nome = document.getElementById('clientName').value || "Cliente";
             const carro = document.getElementById('carInfo').value || "Veículo";
             const link = document.getElementById('linkFotos').value;
-            const total = document.getElementById('totalValue').innerText;
+            
 
             let texto = `Seu carro está pronto, *${nome}*! ✨🚗\n\nFinalizamos os serviços no seu *${carro}*!\n\n${link ? `📸 *Veja as fotos do serviço:* ${link}\n` : ''}\n💰 *${total}*\n\nO veículo já está disponível para retirada.🌟\n\n📍 *Localização:* ${MAP_LINK}\n\nLuis – *STAR STUDIO CAR* 🚗✨`;
             document.getElementById('outputIndividual').value = texto;
