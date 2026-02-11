@@ -15,6 +15,7 @@
     <base href="/Star/">
     <title>Star Studio Car</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="pwa-styles.css">
 </head>
 
 <body>
@@ -889,57 +890,91 @@ END:VCALENDAR`;
         window.onload = initApp;
         // Registra o Service Worker e configura o prompt de instalação
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                // Registra o Service Worker
-                navigator.serviceWorker.register('/Star/sw.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registration successful');
-                        
-                        // Configura o evento para o prompt de instalação
-                        window.addEventListener('beforeinstallprompt', (e) => {
-                            // Previne que o prompt apareça automaticamente
-                            e.preventDefault();
-                            // Armazena o evento para que possa ser acionado depois
-                            window.deferredPrompt = e;
-                            
-                            // Mostra um botão ou notificação para instalar o app
-                            console.log('PWA pode ser instalado');
-                            
-                            // Opcional: Mostrar um botão para o usuário instalar
-                            const installButton = document.createElement('button');
-                            installButton.textContent = 'Instalar App';
-                            installButton.style.position = 'fixed';
-                            installButton.style.bottom = '80px';
-                            installButton.style.left = '50%';
-                            installButton.style.transform = 'translateX(-50%)';
-                            installButton.style.padding = '10px 20px';
-                            installButton.style.backgroundColor = '#f59e0b';
-                            installButton.style.color = 'black';
-                            installButton.style.border = 'none';
-                            installButton.style.borderRadius = '20px';
-                            installButton.style.zIndex = '1000';
-                            document.body.appendChild(installButton);
-                            
-                            installButton.addEventListener('click', () => {
-                                // Mostra o prompt de instalação
-                                window.deferredPrompt.prompt();
-                                // Espera o usuário responder ao prompt
-                                window.deferredPrompt.userChoice.then((choiceResult) => {
-                                    if (choiceResult.outcome === 'accepted') {
-                                        console.log('Usuário aceitou a instalação');
-                                    } else {
-                                        console.log('Usuário recusou a instalação');
-                                    }
-                                    // Limpa o deferredPrompt
-                                    window.deferredPrompt = null;
-                                    // Remove o botão
-                                    installButton.remove();
-                                });
-                            });
-                        });
-                    })
-                    .catch(err => console.error('Falha no registro do ServiceWorker: ', err));
+            let deferredPrompt;
+            
+            // Configura o evento para o prompt de instalação
+            window.addEventListener('beforeinstallprompt', (e) => {
+                console.log('beforeinstallprompt disparado');
+                // Previne que o prompt apareça automaticamente
+                e.preventDefault();
+                // Armazena o evento para que possa ser acionado depois
+                window.deferredPrompt = e;
+                
+                // Mostra o botão de instalação
+                showInstallPromotion();
             });
+
+            // Função para mostrar o botão de instalação
+            function showInstallPromotion() {
+                // Verifica se já existe um botão de instalação
+                let installButton = document.getElementById('installButton');
+                
+                if (!installButton) {
+                    // Cria o botão de instalação
+                    installButton = document.createElement('button');
+                    installButton.id = 'installButton';
+                    installButton.textContent = 'Instalar App';
+                    installButton.style.position = 'fixed';
+                    installButton.style.bottom = '20px';
+                    installButton.style.left = '50%';
+                    installButton.style.transform = 'translateX(-50%)';
+                    installButton.style.padding = '10px 20px';
+                    installButton.style.backgroundColor = '#f59e0b';
+                    installButton.style.color = 'black';
+                    installButton.style.border = 'none';
+                    installButton.style.borderRadius = '20px';
+                    installButton.style.zIndex = '1000';
+                    installButton.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+                    document.body.appendChild(installButton);
+                    
+                    // Adiciona o evento de clique ao botão
+                    installButton.addEventListener('click', installApp);
+                }
+            }
+            
+            // Função para instalar o aplicativo
+            function installApp() {
+                if (window.deferredPrompt) {
+                    // Mostra o prompt de instalação
+                    window.deferredPrompt.prompt();
+                    
+                    // Aguarda a resposta do usuário
+                    window.deferredPrompt.userChoice.then((choiceResult) => {
+                        console.log('User choice', choiceResult.outcome);
+                        
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('Usuário aceitou a instalação');
+                        } else {
+                            console.log('Usuário recusou a instalação');
+                        }
+                        
+                        // Limpa o deferredPrompt
+                        window.deferredPrompt = null;
+                        
+                        // Remove o botão de instalação
+                        const installButton = document.getElementById('installButton');
+                        if (installButton) {
+                            installButton.remove();
+                        }
+                    });
+                }
+            }
+            
+            // Registra o Service Worker
+            navigator.serviceWorker.register('/Star/sw.js')
+                .then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    
+                    // Verifica se já está instalado
+                    if (window.matchMedia('(display-mode: standalone)').matches) {
+                        console.log('Aplicativo já instalado');
+                        const installButton = document.getElementById('installButton');
+                        if (installButton) {
+                            installButton.style.display = 'none';
+                        }
+                    }
+                })
+                .catch(err => console.error('Falha no registro do ServiceWorker: ', err));
         }
     </script>
 </body>

@@ -1,0 +1,58 @@
+/* Estilos específicos para o PWA */
+
+/* Garante que o logo na tela inicial não seja cortado */
+.app-icon {
+    width: 100%;
+    height: auto;
+    max-width: 200px;
+    margin: 0 auto;
+    display: block;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Melhora a aparência do splash screen */
+@media all and (display-mode: standalone) {
+    /* Adiciona um fundo mais bonito */
+    body {
+        background-color: #212121;
+        transition: background-color 0.3s ease;
+    }
+    
+    /* Ajusta o logo principal */
+    .logo {
+        width: 80%;
+        max-width: 300px;
+        height: auto;
+        margin: 20px auto;
+        display: block;
+    }
+    
+    /* Melhora o botão de instalação */
+    #installButton {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 12px 24px;
+        background-color: #f59e0b;
+        color: #000;
+        border: none;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        z-index: 1000;
+    }
+    
+    #installButton:hover {
+        background-color: #e6900e;
+        transform: translateX(-50%) scale(1.05);
+    }
+    
+    #installButton:active {
+        transform: translateX(-50%) scale(0.98);
+    }
+}

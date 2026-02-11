@@ -1,4 +1,4 @@
-const CACHE_NAME = 'star-studio-v4';
+const CACHE_NAME = 'star-studio-v5';
 const BASE_PATH = '/Star';
 const ASSETS = [
     `${BASE_PATH}/`,
@@ -18,9 +18,19 @@ self.addEventListener('install', (event) => {
         caches.open(CACHE_NAME)
             .then((cache) => {
                 console.log('Cache aberto');
-                return cache.addAll(ASSETS);
+                // Adiciona os arquivos ao cache individualmente para melhor tratamento de erros
+                return Promise.all(
+                    ASSETS.map(url => {
+                        return cache.add(url).catch(err => {
+                            console.warn(`Não foi possível armazenar ${url} no cache:`, err);
+                        });
+                    })
+                );
             })
             .then(() => self.skipWaiting())
+            .catch(err => {
+                console.error('Falha ao instalar o Service Worker:', err);
+            })
     );
 });
 
@@ -48,15 +58,20 @@ self.addEventListener('fetch', (event) => {
     // Ignora requisições que não são GET
     if (event.request.method !== 'GET') return;
 
+    // Ignora requisições de terceiros
+    if (!event.request.url.startsWith(self.location.origin)) {
+        return;
+    }
+
     event.respondWith(
-        caches.match(event.request)
+        caches.match(event.request, { ignoreSearch: true })
             .then((response) => {
                 // Retorna o recurso do cache se disponível
                 if (response) {
                     return response;
                 }
 
-                // Se não estiver no cache, busca na rede e armazena em cache
+                // Se não estiver no cache, busca na rede
                 return fetch(event.request)
                     .then((response) => {
                         // Verifica se recebemos uma resposta válida
@@ -74,11 +89,16 @@ self.addEventListener('fetch', (event) => {
 
                         return response;
                     })
-                    .catch(() => {
-                        // Se a rede falhar, tenta retornar a página inicial
+                    .catch((error) => {
+                        console.error('Fetch falhou; retornando página offline.', error);
+                        // Se for uma navegação, retorna a página inicial
                         if (event.request.mode === 'navigate') {
                             return caches.match(`${BASE_PATH}/index.html`);
                         }
+                        return new Response('Erro de conexão. Você está offline.', {
+                            status: 408,
+                            headers: { 'Content-Type': 'text/plain' },
+                        });
                     });
             })
     );
