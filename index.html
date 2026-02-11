@@ -160,8 +160,8 @@
                     <div class="form-group">
                         <div class="input-with-icon">
                             <span class="input-icon">🚗</span>
-                            <input type="text" id="newServiceName" placeholder="Nome do serviço" class="form-input" required
-                                autocomplete="off" data-validate="text">
+                            <input type="text" id="newServiceName" placeholder="Nome do serviço" class="form-input"
+                                required autocomplete="off" data-validate="text">
                             <div class="error-message">Por favor, insira um nome para o serviço</div>
                         </div>
                     </div>
@@ -169,7 +169,7 @@
                         <div class="input-with-icon">
                             <span class="input-icon">💰</span>
                             <span class="currency">R$</span>
-                            <input type="text" id="newServicePrice" placeholder="0,00" class="form-input price-input" 
+                            <input type="text" id="newServicePrice" placeholder="0,00" class="form-input price-input"
                                 inputmode="decimal" required data-validate="price">
                             <div class="error-message">Por favor, insira um preço válido</div>
                         </div>
@@ -184,7 +184,8 @@
                                 <option value="6">6 horas</option>
                                 <option value="8">8 horas</option>
                             </select>
-                            <div class="error-message">Por favor, selecione uma duração válida (2, 4, 6 ou 8 horas)</div>
+                            <div class="error-message">Por favor, selecione uma duração válida (2, 4, 6 ou 8 horas)
+                            </div>
                         </div>
                     </div>
                     <div class="form-actions">
@@ -242,6 +243,7 @@
             document.getElementById(id).classList.add('fade-in');
             if (btn) btn.classList.add('active');
             if (id === 'historico') carregarAbaHistorico();
+            if (id === 'config') renderConfigServices();
             setBackground(id);
             if (btn) updateHighlight(btn);
             // Mostrar botão WhatsApp só na aba NOVO SERVIÇO
@@ -376,9 +378,9 @@
 
             const danos = Array.from(document.querySelectorAll('.insp:checked')).map(c => c.value);
             // Atualiza o valor total formatado
-            document.getElementById('totalValue').innerText = new Intl.NumberFormat('pt-BR', { 
-                style: 'currency', 
-                currency: 'BRL' 
+            document.getElementById('totalValue').innerText = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
             }).format(total);
 
             let texto = `Olá, *${nome}*! 👋\n\nConfirmamos seu agendamento na *STAR STUDIO CAR* ✅\n\n🚗 *Veículo/Placa:* ${carro}\n🗓 *Data:* ${dataF}\n⏰ *Horário:* ${hora}\n\n🛠 *Serviços:*\n${selecionados.join('\n') || '• A definir'}\n\n💰 *Valor Total:* ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}\n`;
@@ -393,7 +395,7 @@
             const nome = document.getElementById('clientName').value || "Cliente";
             const carro = document.getElementById('carInfo').value || "Veículo";
             const link = document.getElementById('linkFotos').value;
-            
+
 
             let texto = `Seu carro está pronto, *${nome}*! ✨🚗\n\nFinalizamos os serviços no seu *${carro}*!\n\n${link ? `📸 *Veja as fotos do serviço:* ${link}\n` : ''}\n💰 *${total}*\n\nO veículo já está disponível para retirada.🌟\n\n📍 *Localização:* ${MAP_LINK}\n\nLuis – *STAR STUDIO CAR* 🚗✨`;
             document.getElementById('outputIndividual').value = texto;
@@ -423,23 +425,23 @@
             const lista = document.getElementById('listaHistorico');
             const historico = JSON.parse(localStorage.getItem('star_history') || '[]');
             lista.innerHTML = historico.map((h, idx) => `
-                <div class="history-item">
-                    <button class="btn-delete" title="Excluir" onclick="deletarDoHistorico(${idx})">🗑️</button>
-                    <div class="history-header">
-                        <span class="history-plate">${h.placa || ''}</span>
+                <div class="history-item" style="padding: 15px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <button class="btn-delete" title="Excluir" onclick="deletarDoHistorico(${idx})" style="top: 10px; right: 10px;">🗑️</button>
+                    <div class="history-header" style="margin-bottom: 10px;">
+                        <span class="history-plate" style="font-size: 1.1rem; letter-spacing: 1px;">${h.placa || ''}</span>
                         <span class="history-badge">Agendado</span>
                     </div>
-                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:2px;">
-                        <span class="history-date">${h.data || ''}</span>
-                        <span class="history-value">${h.total || ''}</span>
+                    <div style="display:flex;align-items:center;gap:15px;margin-bottom:8px;">
+                        <span class="history-date" style="font-size: 0.95rem;">📅 ${h.data || ''}</span>
+                        <span class="history-value" style="font-weight: 700; color: var(--accent);">💰 ${h.total || ''}</span>
                     </div>
-                    <div style="color:#a1a1a1;font-size:0.93em;margin-bottom:2px;">${h.nome || ''}</div>
-                    <div class="history-services">
-                        <span class="history-service-badge">Lavagem Comercial</span>
+                    <div style="color:#e0e0e0;font-size:1rem;margin-bottom:10px;font-weight:500;">👤 ${h.nome || ''}</div>
+                    <div class="history-services" style="margin-bottom: 15px;">
+                        <span class="history-service-badge" style="padding: 4px 10px; background: rgba(245, 158, 11, 0.2); color: var(--accent); border-radius: 6px; font-size: 0.85rem;">Lavagem Comercial</span>
                     </div>
-                    <button class="btn btn-ready" onclick="enviarProntoWhatsApp('${h.nome}', '${h.placa}', ${idx})">&#x2709; AVISAR PRONTO</button>
+                    <button class="btn btn-ready" onclick="enviarProntoWhatsApp('${h.nome}', '${h.placa}', ${idx})" style="width: 100%; padding: 10px; font-weight: 600;">&#x2709; AVISAR PRONTO</button>
                 </div>
-            `).join('') || '<p style="text-align:center; color:gray">Sem histórico.</p>';
+            `).join('') || '<p style="text-align:center; color:gray; padding: 20px;">Sem histórico de serviços.</p>';
         }
 
         function deletarDoHistorico(idx) {
@@ -590,25 +592,25 @@ END:VCALENDAR`;
                         return JSON.parse(cached);
                     }
                 }
-                
+
                 // Se não encontrar no cache ou se useCache for false, tenta carregar do servidor
                 const serverServices = await loadServicesFromServer();
                 if (serverServices) {
                     return serverServices;
                 }
-                
+
                 // Se não conseguir carregar do servidor, usa o backup local ou os padrões
                 const localBackup = localStorage.getItem('local_services_backup');
                 if (localBackup) {
                     return JSON.parse(localBackup);
                 }
-                
+
                 // Se nada mais estiver disponível, retorna os serviços padrão
                 return DEFAULT_SERVICES.slice();
-                
-            } catch (e) { 
+
+            } catch (e) {
                 console.error('Erro ao carregar serviços:', e);
-                return DEFAULT_SERVICES.slice(); 
+                return DEFAULT_SERVICES.slice();
             }
         }
 
@@ -645,15 +647,15 @@ END:VCALENDAR`;
                     },
                     body: JSON.stringify(arr)
                 });
-                
+
                 if (!response.ok) throw new Error('Falha na sincronização');
-                
+
                 // Se a sincronização for bem-sucedida, salva uma cópia local
                 localStorage.setItem('last_sync', new Date().toISOString());
-                
+
                 // Salva os serviços no arquivo local para referência futura
                 localStorage.setItem('local_services_backup', JSON.stringify(arr));
-                
+
                 const result = await response.json();
                 console.log('Serviços sincronizados com sucesso:', result);
                 return result;
@@ -713,12 +715,12 @@ END:VCALENDAR`;
                 const priceEl = document.querySelector(`.cfg-price[data-id='${id}']`);
                 const svc = services.find(s => s.id === id);
                 if (!svc) return;
-                
+
                 // price may be formatted with comma
                 const raw = priceEl ? priceEl.value.replace(/\./g, '').replace(',', '.') : '';
                 const p = parseFloat(raw);
                 if (!isNaN(p)) svc.price = p;
-                
+
                 await saveServices(services);
                 await renderServicesGrid();
                 await renderConfigServices();
@@ -739,20 +741,20 @@ END:VCALENDAR`;
             const price = parseFloat(value) || 0;
             return parseFloat(price.toFixed(2));
         }
-        
+
         // Format price input for display
         function formatPrice(input) {
             if (!input) return 0;
-            
+
             // Get the numeric value
             const value = getPriceValue(input);
-            
+
             // Format as BRL currency (R$ 0,00)
             input.value = value.toLocaleString('pt-BR', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
-            
+
             return value;
         }
 
@@ -761,43 +763,43 @@ END:VCALENDAR`;
             const value = field.value.trim();
             const validationType = field.dataset.validate;
             const inputContainer = field.closest('.input-with-icon');
-            
+
             // Reset error state
             inputContainer?.classList.remove('error');
-            
+
             // Skip validation if field is not required and empty
             if (!field.required && !value) return true;
-            
+
             // Validation rules
             let isValid = true;
-            
-            switch(validationType) {
+
+            switch (validationType) {
                 case 'text':
                     isValid = value.length >= 2;
                     break;
-                    
+
                 case 'price':
                     const price = getPriceValue({ value });
                     isValid = price > 0;
                     break;
-                    
+
                 case 'number':
                     // Valida se é um número e se está entre as durações permitidas (2, 4, 6, 8 horas)
                     const validDurations = ['2', '4', '6', '8'];
                     isValid = validDurations.includes(String(value));
                     break;
-                    
+
                 default:
                     isValid = value.length > 0;
             }
-            
+
             // Update UI
             if (!isValid && inputContainer) {
                 inputContainer.classList.add('error');
                 inputContainer.classList.add('shake');
                 setTimeout(() => inputContainer.classList.remove('shake'), 500);
             }
-            
+
             return isValid;
         }
 
@@ -814,12 +816,12 @@ END:VCALENDAR`;
         function resetForm() {
             const form = document.getElementById('serviceForm');
             if (!form) return;
-            
+
             form.reset();
             document.querySelectorAll('.input-with-icon').forEach(el => {
                 el.classList.remove('error');
             });
-            
+
             const nameInput = document.getElementById('newServiceName');
             if (nameInput) nameInput.focus();
         }
@@ -827,36 +829,36 @@ END:VCALENDAR`;
         // Add new service
         async function addNewService(event) {
             if (event) event.preventDefault();
-            
+
             const nameInput = document.getElementById('newServiceName');
             const priceInput = document.getElementById('newServicePrice');
             const durationInput = document.getElementById('serviceDuration');
             const saveButton = document.getElementById('saveButton');
             const spinner = saveButton?.querySelector('.loading-spinner');
-            
+
             // Validate all fields
             const isNameValid = nameInput ? validateField(nameInput) : false;
             const isPriceValid = priceInput ? validateField(priceInput) : false;
-            
+
             if (!isNameValid || !isPriceValid) {
                 return false;
             }
-            
+
             // Get numeric price value and duration in hours
             const price = priceInput ? getPriceValue(priceInput) : 0;
             const duration = durationInput && durationInput.value ? parseInt(durationInput.value) : 0; // Já está em horas
-            
+
             try {
                 // Show loading state
                 if (saveButton) saveButton.disabled = true;
                 if (spinner) spinner.style.display = 'block';
-                
+
                 // Simulate API call (replace with actual API call)
                 await new Promise(resolve => setTimeout(resolve, 1000));
-                
+
                 // Get existing services
                 const services = await getServices();
-                
+
                 // Add new service
                 const newService = {
                     id: 's' + Date.now(),
@@ -865,19 +867,19 @@ END:VCALENDAR`;
                     duration: duration,
                     icon: '🔧' // Default icon
                 };
-                
+
                 services.push(newService);
                 await saveServices(services);
-                
+
                 // Show success message
                 showSuccessMessage();
-                
+
                 // Reset form
                 resetForm();
-                
+
                 // Update services list - only render the grid, config will update automatically
                 await renderServicesGrid();
-                
+
             } catch (error) {
                 console.error('Error saving service:', error);
                 alert('Ocorreu um erro ao salvar o serviço. Por favor, tente novamente.');
@@ -886,32 +888,32 @@ END:VCALENDAR`;
                 if (saveButton) saveButton.disabled = false;
                 if (spinner) spinner.style.display = 'none';
             }
-            
+
             return false;
         }
 
         // Initialize form events when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('serviceForm');
             const nameInput = document.getElementById('newServiceName');
             const priceInput = document.getElementById('newServicePrice');
-            
+
             if (form) {
                 // Price input formatting
                 if (priceInput) {
-                    priceInput.addEventListener('input', function() {
+                    priceInput.addEventListener('input', function () {
                         // Allow only numbers and comma
                         this.value = this.value.replace(/[^0-9,]/g, '');
                     });
-                    
+
                     // Format on blur
-                    priceInput.addEventListener('blur', function() {
+                    priceInput.addEventListener('blur', function () {
                         if (this.value) {
                             formatPrice(this);
                         }
                     });
                 }
-                
+
                 // Real-time validation
                 if (nameInput) {
                     nameInput.addEventListener('blur', () => validateField(nameInput));
@@ -919,19 +921,19 @@ END:VCALENDAR`;
                 if (priceInput) {
                     priceInput.addEventListener('blur', () => validateField(priceInput));
                 }
-                
+
                 // Submit handler
                 form.addEventListener('submit', addNewService);
             }
-            
+
             // Focus on name field when config tab is opened
             const configTab = document.querySelector('.tab-btn[onclick*="config"]');
             if (configTab && nameInput) {
-                configTab.addEventListener('click', function() {
+                configTab.addEventListener('click', function () {
                     setTimeout(() => nameInput.focus(), 300);
                 });
             }
-            
+
             // Initialize price formatting for config items
             attachPriceFormatting();
         });
@@ -943,13 +945,13 @@ END:VCALENDAR`;
                     // Mantém apenas dígitos, vírgula e ponto
                     e.target.value = e.target.value.replace(/[^0-9.,]/g, '');
                 });
-                
+
                 el.addEventListener('blur', (e) => {
                     // Usa a função formatPrice para formatar o valor ao sair do campo
                     formatPrice(e.target);
                 });
             });
-            
+
             // Configura formatação para o campo de novo preço
             const newPrice = document.getElementById('newServicePrice');
             if (newPrice) {
@@ -957,7 +959,7 @@ END:VCALENDAR`;
                 newPrice.addEventListener('input', (e) => {
                     e.target.value = e.target.value.replace(/[^0-9.,]/g, '');
                 });
-                
+
                 // Formata o valor ao sair do campo
                 newPrice.addEventListener('blur', (e) => {
                     formatPrice(e.target);
@@ -984,8 +986,10 @@ END:VCALENDAR`;
             // Carrega serviços do servidor ao iniciar
             try {
                 const services = await getServices(false); // false para forçar atualização do servidor
-                // Renderiza apenas a grade de serviços, a configuração será carregada quando necessário
+                // Renderiza a grade de serviços
                 await renderServicesGrid();
+                // Removido renderConfigServices daqui para evitar duplicidade de renderização inicial
+                // e garantir que ele só carregue quando o usuário abrir a aba de configuração
             } catch (error) {
                 console.error('Erro ao carregar serviços iniciais:', error);
             }
@@ -995,7 +999,7 @@ END:VCALENDAR`;
         // Registra o Service Worker e configura o prompt de instalação
         if ('serviceWorker' in navigator) {
             let deferredPrompt;
-            
+
             // Configura o evento para o prompt de instalação
             window.addEventListener('beforeinstallprompt', (e) => {
                 console.log('beforeinstallprompt disparado');
@@ -1003,7 +1007,7 @@ END:VCALENDAR`;
                 e.preventDefault();
                 // Armazena o evento para que possa ser acionado depois
                 window.deferredPrompt = e;
-                
+
                 // Mostra o botão de instalação
                 showInstallPromotion();
             });
@@ -1012,7 +1016,7 @@ END:VCALENDAR`;
             function showInstallPromotion() {
                 // Verifica se já existe um botão de instalação
                 let installButton = document.getElementById('installButton');
-                
+
                 if (!installButton) {
                     // Cria o botão de instalação
                     installButton = document.createElement('button');
@@ -1030,31 +1034,31 @@ END:VCALENDAR`;
                     installButton.style.zIndex = '1000';
                     installButton.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
                     document.body.appendChild(installButton);
-                    
+
                     // Adiciona o evento de clique ao botão
                     installButton.addEventListener('click', installApp);
                 }
             }
-            
+
             // Função para instalar o aplicativo
             function installApp() {
                 if (window.deferredPrompt) {
                     // Mostra o prompt de instalação
                     window.deferredPrompt.prompt();
-                    
+
                     // Aguarda a resposta do usuário
                     window.deferredPrompt.userChoice.then((choiceResult) => {
                         console.log('User choice', choiceResult.outcome);
-                        
+
                         if (choiceResult.outcome === 'accepted') {
                             console.log('Usuário aceitou a instalação');
                         } else {
                             console.log('Usuário recusou a instalação');
                         }
-                        
+
                         // Limpa o deferredPrompt
                         window.deferredPrompt = null;
-                        
+
                         // Remove o botão de instalação
                         const installButton = document.getElementById('installButton');
                         if (installButton) {
@@ -1063,12 +1067,12 @@ END:VCALENDAR`;
                     });
                 }
             }
-            
+
             // Registra o Service Worker
             navigator.serviceWorker.register('/Star/sw.js')
                 .then(registration => {
                     console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                    
+
                     // Verifica se já está instalado
                     if (window.matchMedia('(display-mode: standalone)').matches) {
                         console.log('Aplicativo já instalado');
