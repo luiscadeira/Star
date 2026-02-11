@@ -2,13 +2,18 @@
 <html lang="pt-br">
 
 <head>
-</head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Star Studio Car</title>
-<link rel="stylesheet" href="styles.css">
-
-<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f59e0b">
+    <meta name="description" content="Estética automotiva de alto padrão. Cuidamos do seu carro com brilho e proteção.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="Icon.png">
+    <title>Star Studio Car</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -881,16 +886,58 @@ END:VCALENDAR`;
         }
 
         window.onload = initApp;
-        // register service worker for offline / install prompts
+        // Registra o Service Worker e configura o prompt de instalação
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
+                // Registra o Service Worker
                 navigator.serviceWorker.register('sw.js')
                     .then(registration => {
                         console.log('ServiceWorker registration successful');
+                        
+                        // Configura o evento para o prompt de instalação
+                        window.addEventListener('beforeinstallprompt', (e) => {
+                            // Previne que o prompt apareça automaticamente
+                            e.preventDefault();
+                            // Armazena o evento para que possa ser acionado depois
+                            window.deferredPrompt = e;
+                            
+                            // Mostra um botão ou notificação para instalar o app
+                            console.log('PWA pode ser instalado');
+                            
+                            // Opcional: Mostrar um botão para o usuário instalar
+                            const installButton = document.createElement('button');
+                            installButton.textContent = 'Instalar App';
+                            installButton.style.position = 'fixed';
+                            installButton.style.bottom = '80px';
+                            installButton.style.left = '50%';
+                            installButton.style.transform = 'translateX(-50%)';
+                            installButton.style.padding = '10px 20px';
+                            installButton.style.backgroundColor = '#f59e0b';
+                            installButton.style.color = 'black';
+                            installButton.style.border = 'none';
+                            installButton.style.borderRadius = '20px';
+                            installButton.style.zIndex = '1000';
+                            document.body.appendChild(installButton);
+                            
+                            installButton.addEventListener('click', () => {
+                                // Mostra o prompt de instalação
+                                window.deferredPrompt.prompt();
+                                // Espera o usuário responder ao prompt
+                                window.deferredPrompt.userChoice.then((choiceResult) => {
+                                    if (choiceResult.outcome === 'accepted') {
+                                        console.log('Usuário aceitou a instalação');
+                                    } else {
+                                        console.log('Usuário recusou a instalação');
+                                    }
+                                    // Limpa o deferredPrompt
+                                    window.deferredPrompt = null;
+                                    // Remove o botão
+                                    installButton.remove();
+                                });
+                            });
+                        });
                     })
-                    .catch(error => {
-                        console.error('ServiceWorker registration failed: ', error);
-                    });
+                    .catch(err => console.error('Falha no registro do ServiceWorker: ', err));
             });
         }
     </script>
