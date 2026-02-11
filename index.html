@@ -156,7 +156,7 @@
                         onclick="renderConfigServices()">&#x1F504; Recarregar</button>
                 </div>
                 <div id="configServices" style="margin-top:18px"></div>
-                <form id="serviceForm" class="add-service-form" onsubmit="return addNewService(event)">
+                <form id="serviceForm" class="add-service-form">
                     <div class="form-group">
                         <div class="input-with-icon">
                             <span class="input-icon">🚗</span>
@@ -859,6 +859,15 @@ END:VCALENDAR`;
                 // Get existing services
                 const services = await getServices();
 
+                // Check if service already exists to avoid duplicates
+                const serviceName = nameInput.value.trim();
+                const exists = services.find(s => s.name.toLowerCase() === serviceName.toLowerCase());
+
+                if (exists) {
+                    alert('Este serviço já existe!');
+                    return false;
+                }
+
                 // Add new service
                 const newService = {
                     id: 's' + Date.now(),
@@ -877,8 +886,9 @@ END:VCALENDAR`;
                 // Reset form
                 resetForm();
 
-                // Update services list - only render the grid, config will update automatically
+                // Update services list
                 await renderServicesGrid();
+                await renderConfigServices();
 
             } catch (error) {
                 console.error('Error saving service:', error);
@@ -983,6 +993,23 @@ END:VCALENDAR`;
 
         // Inicialização da aplicação
         async function initApp() {
+            // Limpa duplicatas existentes por nome antes de renderizar
+            try {
+                const services = await getServices();
+                const seen = new Set();
+                const uniqueServices = services.filter(s => {
+                    const name = s.name.toLowerCase().trim();
+                    if (seen.has(name)) return false;
+                    seen.add(name);
+                    return true;
+                });
+                if (uniqueServices.length !== services.length) {
+                    await saveServices(uniqueServices);
+                }
+            } catch (e) {
+                console.error('Erro ao limpar duplicatas:', e);
+            }
+
             // Carrega serviços do servidor ao iniciar
             try {
                 const services = await getServices(false); // false para forçar atualização do servidor
