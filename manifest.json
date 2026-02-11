@@ -9,36 +9,16 @@
     "theme_color": "#f59e0b",
     "icons": [
         {
-            "src": "Icon-192.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "any maskable"
-        },
-        {
-            "src": "Icon-512.png",
+            "src": "Icon.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any maskable"
-        }
-    ],
-    "screenshots": [
-        {
-            "src": "screenshot-home.png",
-            "sizes": "1080x1920",
-            "type": "image/png",
-            "label": "Página Inicial do Star Studio"
-        }
-    ],
-    "shortcuts": [
-        {
-            "name": "Agendar Serviço",
-            "url": "/agendar",
-            "icons": [{ "src": "icon-calendar.png", "sizes": "192x192" }]
         },
         {
-            "name": "Ver Localização",
-            "url": "/contato",
-            "icons": [{ "src": "icon-map.png", "sizes": "192x192" }]
+            "src": "logo.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
         }
     ]
 }
