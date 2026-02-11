@@ -9,9 +9,10 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="Icon.png">
+    <base href="/Star/">
     <title>Star Studio Car</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -890,7 +891,7 @@ END:VCALENDAR`;
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 // Registra o Service Worker
-                navigator.serviceWorker.register('sw.js')
+                navigator.serviceWorker.register('/Star/sw.js')
                     .then(registration => {
                         console.log('ServiceWorker registration successful');
                         

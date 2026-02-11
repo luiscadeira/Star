@@ -1,12 +1,13 @@
-const CACHE_NAME = 'star-studio-v3';
+const CACHE_NAME = 'star-studio-v4';
+const BASE_PATH = '/Star';
 const ASSETS = [
-    '/',
-    '/index.html',
-    '/outro/index.html',
-    '/manifest.json',
-    '/logo.png',
-    '/Icon.png',
-    '/styles.css',
+    `${BASE_PATH}/`,
+    `${BASE_PATH}/index.html`,
+    `${BASE_PATH}/outro/index.html`,
+    `${BASE_PATH}/manifest.json`,
+    `${BASE_PATH}/logo.png`,
+    `${BASE_PATH}/Icon.png`,
+    `${BASE_PATH}/styles.css`,
     'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css',
     'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js'
 ];
@@ -76,7 +77,7 @@ self.addEventListener('fetch', (event) => {
                     .catch(() => {
                         // Se a rede falhar, tenta retornar a página inicial
                         if (event.request.mode === 'navigate') {
-                            return caches.match('/index.html');
+                            return caches.match(`${BASE_PATH}/index.html`);
                         }
                     });
             })
@@ -88,8 +89,8 @@ self.addEventListener('push', (event) => {
     const title = 'Star Studio Car';
     const options = {
         body: event.data.text(),
-        icon: 'logo.png',
-        badge: 'logo.png',
+        icon: '/Star/logo.png',
+        badge: '/Star/logo.png',
         vibrate: [100, 50, 100],
         data: { primaryKey: 1 }
     };
