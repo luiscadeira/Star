@@ -445,10 +445,9 @@
             if (!item) return;
 
             const link = document.getElementById('linkFotos').value;
-            const total = item.total;
             const MAP_LINK = "https://maps.app.goo.gl/KPY28spUTp2C3Xp58";
 
-            let texto = `Seu carro está pronto, *${nome}*! ✨🚗\n\nFinalizamos os serviços no seu *${placa}*!\n\n${link ? `📸 *Veja as fotos do serviço:* ${link}\n` : ''}💰 *${total}*\n\nO veículo já está disponível para retirada. 🌟\n\n📍 *Localização:* ${MAP_LINK}\n\nLuis – *STAR STUDIO CAR* 🚗✨`;
+            let texto = `Seu carro está pronto, *${nome}*! ✨🚗\n\nFinalizamos os serviços no seu *${placa}*!\n\n${link ? `📸 *Veja as fotos do serviço:* ${link}\n\n` : ''}O veículo já está disponível para retirada. 🌟\n\n📍 *Localização:* ${MAP_LINK}\n\nLuis – *STAR STUDIO CAR* 🚗✨`;
 
             const txt = encodeURIComponent(texto);
             window.open(`https://wa.me/?text=${txt}`, '_blank');
