@@ -40,22 +40,18 @@
 
         <nav class="nav-tabs">
             <div class="tab-highlight"></div>
-            <button class="tab-btn active" onclick="openTab('semanal', this)">
-                <span style="font-size:1.3em;margin-right:6px;">📅</span>
-                <span style="font-weight:700;">AGENDA</span>
-            </button>
-            <button class="tab-btn" onclick="openTab('individual', this)">
-                <span style="font-size:1.3em;margin-right:6px;">🚗</span>
-                <span style="font-weight:700;">SERVIÇOS</span>
-            </button>
-            <button class="tab-btn" onclick="openTab('historico', this)">
-                <span style="font-size:1.3em;margin-right:6px;">📋</span>
-                <span style="font-weight:700;">AVISOS</span>
-            </button>
-            <button class="tab-btn" onclick="openTab('config', this)">
-                <span style="font-size:1.3em;margin-right:6px;">⚙️</span>
-                <span style="font-weight:700;">CONFIG</span>
-            </button>
+            <button class="tab-btn active" onclick="openTab('semanal', this)"><span
+                    style="font-size:1.3em;margin-right:6px;"></span> <span
+                    style="font-weight:700;">AGENDA</span></button>
+            <button class="tab-btn" onclick="openTab('individual', this)"><span
+                    style="font-size:1.3em;margin-right:6px;"></span> <span
+                    style="font-weight:700;">SERVIÇOS</span></button>
+            <button class="tab-btn" onclick="openTab('historico', this)"><span
+                    style="font-size:1.3em;margin-right:6px;"></span> <span
+                    style="font-weight:700;">AVISOS</span></button>
+            <button class="tab-btn" onclick="openTab('config', this)"><span
+                    style="font-size:1.3em;margin-right:6px;"></span> <span
+                    style="font-weight:700;">CONFIG</span></button>
         </nav>
 
         <!-- ABA 1: AGENDA -->
@@ -133,27 +129,17 @@
         </div>
 
         <!-- ABA 3: AVISOS -->
-        <div id="historico" class="tab-content" style="display: none;">
-            <h2>Histórico de Serviços</h2>
-            <div style="margin-bottom: 20px; position: relative;">
-                <input type="text" id="buscaHistorico" placeholder="Buscar por nome ou placa..." style="
-                    width: 100%;
-                    padding: 12px 15px;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 8px;
-                    background: rgba(255, 255, 255, 0.05);
-                    color: #fff;
-                    font-size: 0.95rem;
-                    transition: all 0.2s;
-                ">
-                <span style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #666;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                </span>
+        <div id="historico" class="tab-content">
+            <div class="glass-card">
+                <div class="section-title"
+                    style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.1rem;letter-spacing:1px;">
+                    <span style="font-size:1.3em;">📋</span> ÚLTIMOS SERVIÇOS
+                </div>
+                <div id="listaHistorico" class="history-list"></div>
+                <button class="btn btn-delete-all"
+                    style="background:rgba(51,51,51,0.7);color:white;width:100%;margin-top:20px;border-radius:12px;"
+                    onclick="limparHistoricoTotal()">🗑️ Apagar Histórico</button>
             </div>
-            <div id="listaHistorico"></div>
         </div>
 
         <!-- ABA 4: CONFIG -->
@@ -246,45 +232,23 @@
         }
 
         function openTab(id, btn) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-                tab.classList.add('fade-out');
-                setTimeout(() => tab.classList.remove('fade-out'), 250);
-            });
-            
-            // Remove active class from all buttons
+            const prev = document.querySelector('.tab-content.active');
+            if (prev) {
+                prev.classList.remove('active');
+                prev.classList.add('fade-out');
+                setTimeout(() => prev.classList.remove('fade-out'), 250);
+            }
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('fade-in'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            
-            // Show selected tab and mark button as active
-            const selectedTab = document.getElementById(id);
-            if (selectedTab) {
-                selectedTab.classList.add('active');
-                selectedTab.classList.add('fade-in');
-            }
-            
-            if (btn) {
-                btn.classList.add('active');
-                updateHighlight(btn);
-            }
-            
-            // Handle tab-specific actions
-            switch(id) {
-                case 'historico':
-                    carregarAbaHistorico();
-                    break;
-                case 'config':
-                    renderConfigServices();
-                    break;
-                case 'individual':
-                    document.getElementById('whatsappAction').style.display = 'block';
-                    break;
-                default:
-                    document.getElementById('whatsappAction').style.display = 'none';
-            }
-            
-            // Update background based on active tab
+            document.getElementById(id).classList.add('active');
+            document.getElementById(id).classList.add('fade-in');
+            if (btn) btn.classList.add('active');
+            if (id === 'historico') carregarAbaHistorico();
+            if (id === 'config') renderConfigServices();
             setBackground(id);
+            if (btn) updateHighlight(btn);
+            // Mostrar botão WhatsApp só na aba NOVO SERVIÇO
+            document.getElementById('whatsappAction').style.display = (id === 'individual') ? 'block' : 'none';
         }
 
         // --- INICIALIZAÇÃO E PERSISTÊNCIA DA AGENDA ---
@@ -494,86 +458,28 @@
 
         function formatarDataParaExibicao(dataStr) {
             if (!dataStr) return '';
-            
-            const hoje = new Date();
-            const [ano, mes, dia] = dataStr.split('-');
+            const [dia, mes, ano] = dataStr.split('/');
             const data = new Date(ano, mes - 1, dia);
+            const hoje = new Date();
+            const ontem = new Date(hoje);
+            ontem.setDate(hoje.getDate() - 1);
             
-            // Calculate difference in days
-            const diffTime = data - hoje;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            
-            // Return relative date if within range
-            if (diffDays === 0) return 'Hoje';
-            if (diffDays === 1) return 'Amanhã';
-            if (diffDays === -1) return 'Ontem';
-            if (diffDays > 0 && diffDays <= 7) {
-                const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-                return dias[data.getDay()];
+            if (data.toDateString() === hoje.toDateString()) {
+                return 'Hoje';
+            } else if (data.toDateString() === ontem.toDateString()) {
+                return 'Ontem';
+            } else {
+                const opcoes = { weekday: 'long', day: 'numeric', month: 'long' };
+                return data.toLocaleDateString('pt-BR', opcoes).replace(/\b\w/g, l => l.toUpperCase());
             }
-            
-            // Default to formatted date
-            return `${dia}/${mes}/${ano}`;
-        }
-        
-        function calcularTotalDia(itens) {
-            return itens.reduce((total, item) => {
-                if (item.servicos && item.servicos.length > 0) {
-                    const totalServicos = item.servicos.reduce((sum, servico) => 
-                        sum + (parseFloat(servico.preco) || 0), 0);
-                    return total + totalServicos;
-                }
-                return total;
-            }, 0);
-        }
-        
-        function getStatusAgendamento(dataStr, horaStr) {
-            if (!dataStr || !horaStr) return { texto: 'Agendado', cor: '#10b981' };
-            
-            const agora = new Date();
-            const [ano, mes, dia] = dataStr.split('-');
-            const [hora, minuto] = horaStr.split(':');
-            const dataHora = new Date(ano, mes - 1, dia, hora, minuto);
-            
-            // Se já passou do horário
-            if (agora > dataHora) {
-                return { texto: 'Atrasado', cor: '#ef4444' };
-            }
-            
-            // Se for hoje
-            if (agora.toDateString() === dataHora.toDateString()) {
-                return { texto: 'Hoje', cor: '#3b82f6' };
-            }
-            
-            // Se for amanhã
-            const amanha = new Date();
-            amanha.setDate(agora.getDate() + 1);
-            if (amanha.toDateString() === dataHora.toDateString()) {
-                return { texto: 'Amanhã', cor: '#f59e0b' };
-            }
-            
-            return { texto: 'Agendado', cor: '#10b981' };
-        }
         }
 
-        function carregarAbaHistorico(termoBusca = '') {
+        function carregarAbaHistorico() {
             const lista = document.getElementById('listaHistorico');
             let historico = JSON.parse(localStorage.getItem('star_history') || '[]');
             
-            // Aplicar filtro de busca se houver termo
-            if (termoBusca) {
-                const termo = termoBusca.toLowerCase();
-                historico = historico.filter(item => 
-                    (item.nome && item.nome.toLowerCase().includes(termo)) ||
-                    (item.placa && item.placa.toLowerCase().includes(termo))
-                );
-            }
-            
             if (historico.length === 0) {
-                const mensagem = termoBusca 
-                    ? 'Nenhum resultado encontrado para sua busca.'
-                    : 'Sem histórico de serviços.';
-                lista.innerHTML = `<p style="text-align:center; color:gray; padding: 20px;">${mensagem}</p>`;
+                lista.innerHTML = '<p style="text-align:center; color:gray; padding: 20px;">Sem histórico de serviços.</p>';
                 return;
             }
 
@@ -602,42 +508,28 @@
             }, {});
 
             // Gerar HTML agrupado
+            // Gerar HTML agrupado
 let html = '';
 
 for (const [data, itens] of Object.entries(agrupadoPorData)) {
     const dataFormatada = formatarDataParaExibicao(data);
-                const totalDia = calcularTotalDia(itens);
-                
-                html += `
-                    <div class="history-date-group" style="margin-bottom: 25px; font-family: 'Inter', sans-serif;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                            <div class="date-header" style="
-                                color: #888;
-                                font-size: 0.75rem;
-                                text-transform: uppercase;
-                                letter-spacing: 1px;
-                                display: flex;
-                                align-items: center;
-                                gap: 10px;
-                            ">
-                                <span>${dataFormatada}</span>
-                                <div style="width: 1px; height: 12px; background: rgba(255,255,255,0.1);"></div>
-                                <span>${itens.length} ${itens.length === 1 ? 'agendamento' : 'agendamentos'}</span>
-                            </div>
-                            ${totalDia > 0 ? `
-                                <span style="
-                                    background: rgba(245, 158, 11, 0.1);
-                                    color: #f59e0b;
-                                    font-size: 0.75rem;
-                                    font-weight: 600;
-                                    padding: 4px 8px;
-                                    border-radius: 4px;
-                                ">
-                                    Total: R$ ${totalDia.toFixed(2).replace('.', ',')}
-                                </span>
-                            ` : ''}
-                        </div>
-                        <div class="history-items" style="display: flex; flex-direction: column; gap: 12px;">
+    
+    html += `
+        <div class="history-date-group" style="margin-bottom: 25px; font-family: 'Inter', sans-serif;">
+            <div class="date-header" style="
+                color: #888;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 12px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            ">
+                ${dataFormatada}
+                <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
+            </div>
+            <div class="history-items" style="display: flex; flex-direction: column; gap: 12px;">
     `;
 
     itens.forEach((h, idx) => {
@@ -669,37 +561,13 @@ for (const [data, itens] of Object.entries(agrupadoPorData)) {
                 </div>
 
                 <!-- Horário e Status -->
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 18px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 18px;">
                     <div style="display: flex; align-items: center; gap: 5px; color: #888; font-size: 0.85rem;">
                         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         ${h.hora || '--:--'}
                     </div>
-                    ${(h.servicos && h.servicos.length > 0) ? `
-                        <div style="display: flex; align-items: center; gap: 5px; color: #888; font-size: 0.85rem;">
-                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            ${h.servicos.length} ${h.servicos.length === 1 ? 'serviço' : 'serviços'}
-                        </div>
-                    ` : ''}
-                    ${(() => {
-                        const status = getStatusAgendamento(h.data, h.hora);
-                        return `
-                            <div style="
-                                background: ${status.cor}20;
-                                color: ${status.cor};
-                                padding: 2px 8px;
-                                border-radius: 6px;
-                                font-size: 0.7rem;
-                                font-weight: 700;
-                                text-transform: uppercase;
-                                letter-spacing: 0.5px;
-                                margin-left: auto;
-                            ">
-                                ${status.texto}
-                            </div>
-                        `;
-                    })()}
+                    <span style="color: #333;">|</span>
+                    <span style="color: #10b981; font-size: 0.85rem; font-weight: 600; text-transform: lowercase;">agendados</span>
                 </div>
 
                 <!-- Lista de Serviços (Layout de Linha) -->
