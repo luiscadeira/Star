@@ -533,9 +533,6 @@ for (const [data, itens] of Object.entries(agrupadoPorData)) {
     `;
 
     itens.forEach((h, idx) => {
-        // Cálculo do total dos serviços para exibir no card
-        const totalServicos = h.servicos ? h.servicos.reduce((acc, s) => acc + s.preco, 0) : 0;
-
         html += `
             <div class="history-item" style="
                 padding: 16px;
@@ -543,72 +540,46 @@ for (const [data, itens] of Object.entries(agrupadoPorData)) {
                 border-radius: 12px;
                 border: 1px solid rgba(255, 255, 255, 0.08);
                 position: relative;
-                transition: transform 0.2s ease;
             ">
                 <!-- Botão Deletar -->
                 <button class="btn-delete" title="Excluir" onclick="deletarDoHistorico(${h.originalIndex})" 
-                    style="position: absolute; top: 12px; right: 12px; background: rgba(239, 68, 68, 0.1); border: none; border-radius: 6px; width: 30px; height: 30px; color: #ef4444; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;">
+                    style="position: absolute; top: 12px; right: 12px; background: rgba(239, 68, 68, 0.1); border: none; border-radius: 6px; width: 30px; height: 30px; color: #ef4444; display: flex; align-items: center; justify-content: center; cursor: pointer;">
                     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
                 </button>
                 
-                <div class="history-header" style="margin-bottom: 12px;">
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                        <span class="history-plate" style="
-                            background: #e2e8f0;
-                            color: #1a202c;
-                            padding: 2px 8px;
-                            border-radius: 4px;
-                            font-family: 'Monospace', sans-serif;
-                            font-weight: 700;
-                            font-size: 0.9rem;
-                        ">${h.placa || 'SEM PLACA'}</span>
-                        <span style="
-                            background: rgba(56, 161, 105, 0.15);
-                            color: #48bb78;
-                            padding: 2px 8px;
-                            border-radius: 20px;
-                            font-size: 0.7rem;
-                            font-weight: 600;
-                            text-transform: uppercase;
-                        ">Agendado</span>
-                    </div>
-                    <div style="color: #ffffff; font-size: 1.05rem; font-weight: 500;">${h.nome || 'Cliente'}</div>
+                <!-- Linha 1: Nome - Placa -->
+                <div style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 4px; padding-right: 35px;">
+                    ${h.nome || 'Cliente'} - ${h.placa || 'SEM PLACA'}
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-                    <span style="background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 8px; font-size: 0.85rem; color: #cbd5e0; display: flex; align-items: center; gap: 5px;">
-                        🕒 ${h.hora || '--:--'}
-                    </span>
-                    ${totalServicos > 0 ? `
-                        <span style="font-size: 0.85rem; color: #f59e0b; font-weight: 600;">
-                            Total: R$ ${totalServicos.toFixed(2).replace('.', ',')}
-                        </span>
-                    ` : ''}
+                <!-- Linha 2: Horário - Status -->
+                <div style="font-size: 0.9rem; color: #cbd5e0; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                    <span>🕒 ${h.hora || '--:--'}</span>
+                    <span style="color: rgba(255,255,255,0.3);">|</span>
+                    <span style="color: #48bb78; font-weight: 600; text-transform: lowercase;">agendados</span>
                 </div>
 
                 <!-- Lista de Serviços -->
                 ${h.servicos && h.servicos.length > 0 ? `
-                    <div class="servicos-lista" style="
-                        background: rgba(0,0,0,0.2);
-                        padding: 10px;
-                        border-radius: 8px;
-                        margin-bottom: 15px;
-                    ">
+                    <div class="servicos-lista" style="margin-bottom: 15px;">
                         ${h.servicos.map(servico => `
-                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin: 4px 0;">
-                                <span style="color: #a0aec0;">• ${servico.nome}</span>
-                                <span style="color: #fff;">R$ ${servico.preco.toFixed(2).replace('.', ',')}</span>
+                            <div style="margin-bottom: 8px;">
+                                <div style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">• ${servico.nome}</div>
+                                <div style="color: #f59e0b; font-weight: 700; font-size: 0.95rem; margin-top: 2px;">
+                                    R$ ${servico.preco.toFixed(2).replace('.', ',')}
+                                </div>
                             </div>
                         `).join('')}
                     </div>
                 ` : ''}
                 
+                <!-- Botão WhatsApp -->
                 <button class="btn btn-ready" 
                     onclick="enviarProntoWhatsApp('${(h.nome || '').replace(/'/g, "\\'")}', '${(h.placa || '').replace(/'/g, "\\'")}', ${h.originalIndex})" 
                     style="
                         width: 100%; 
                         padding: 12px; 
-                        font-weight: 600;
+                        font-weight: 700;
                         background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
                         border: none;
                         border-radius: 10px;
@@ -618,10 +589,10 @@ for (const [data, itens] of Object.entries(agrupadoPorData)) {
                         align-items: center;
                         justify-content: center;
                         gap: 8px;
-                        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+                        margin-top: 5px;
                     "
                 >
-                    <span>💬</span> AVISAR QUE ESTÁ PRONTO
+                    <span style="font-size: 1.1rem;">✉</span> AVISAR PRONTO
                 </button>
             </div>
         `;
