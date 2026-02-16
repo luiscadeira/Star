@@ -508,110 +508,115 @@
             }, {});
 
             // Gerar HTML agrupado
-            let html = '';
-            
-            for (const [data, itens] of Object.entries(agrupadoPorData)) {
-                const dataFormatada = formatarDataParaExibicao(data);
+            // Gerar HTML agrupado
+let html = '';
+
+for (const [data, itens] of Object.entries(agrupadoPorData)) {
+    const dataFormatada = formatarDataParaExibicao(data);
+    
+    html += `
+        <div class="history-date-group" style="margin-bottom: 25px; font-family: 'Inter', sans-serif;">
+            <div class="date-header" style="
+                color: #888;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 12px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            ">
+                ${dataFormatada}
+                <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
+            </div>
+            <div class="history-items" style="display: flex; flex-direction: column; gap: 12px;">
+    `;
+
+    itens.forEach((h, idx) => {
+        html += `
+            <div class="history-item" style="
+                padding: 20px;
+                background: #1a1a1a;
+                border-radius: 16px;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                position: relative;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            ">
+                <!-- Botão Deletar Minimalista -->
+                <button title="Excluir" onclick="deletarDoHistorico(${h.originalIndex})" 
+                    style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #444; cursor: pointer; transition: 0.2s;"
+                    onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#444'">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                </button>
                 
-                html += `
-                    <div class="history-date-group" style="margin-bottom: 20px;">
-                        <div class="date-header" style="
-                            color: #f59e0b;
-                            font-weight: 600;
-                            font-size: 0.9rem;
-                            margin-bottom: 10px;
-                            padding: 5px 0;
-                            border-bottom: 1px solid rgba(245, 158, 11, 0.3);
-                        ">${dataFormatada}</div>
-                        <div class="history-items" style="display: flex; flex-direction: column; gap: 15px;">
-                `;
+                <!-- Nome e Placa -->
+                <div style="margin-bottom: 6px; display: flex; align-items: baseline; gap: 8px;">
+                    <span style="font-size: 1.2rem; font-weight: 800; color: #fff; letter-spacing: -0.5px;">
+                        ${(h.nome || 'Cliente').toUpperCase()}
+                    </span>
+                    <span style="color: #666; font-weight: 400; font-size: 1rem;">-</span>
+                    <span style="color: #aaa; font-weight: 600; font-size: 1rem; letter-spacing: 1px;">
+                        ${(h.placa || '---').toUpperCase()}
+                    </span>
+                </div>
 
-                itens.forEach((h, idx) => {
-                    html += `
-                        <div class="history-item" style="
-                            padding: 15px;
-                            background: rgba(255, 255, 255, 0.03);
-                            border-radius: 10px;
-                            border: 1px solid rgba(255, 255, 255, 0.05);
-                            position: relative;
-                        ">
-                            <button class="btn-delete" title="Excluir" onclick="deletarDoHistorico(${h.originalIndex})" 
-                                style="position: absolute; top: 10px; right: 10px; background: rgba(255, 99, 71, 0.2); border: none; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                                🗑️
-                            </button>
-                            
-                            <div class="history-header" style="margin-bottom: 10px;">
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <span class="history-plate" style="font-size: 1.1rem; letter-spacing: 1px; font-weight: 600;">${h.placa || ''}</span>
-                                    <span class="history-badge">Agendado</span>
-                                </div>
-                                <div style="color: #e0e0e0; font-size: 0.95rem; margin-top: 4px;">${h.nome || ''}</div>
-                            </div>
-                            <div style="display:flex;align-items:center;gap:15px;margin-bottom:8px;">
-                                <span class="history-time" style="
-                                    display: inline-flex;
-                                    align-items: center;
-                                    gap: 5px;
-                                    font-size: 0.9rem;
-                                    background: rgba(255, 255, 255, 0.05);
-                                    padding: 4px 10px;
-                                    border-radius: 12px;
-                                    color: #f0f0f0;
-                                ">
-                                    <span>🕒</span>
-                                    <span>${h.hora || '--:--'}</span>
-                                </span>
-                                    ${h.servicos && h.servicos.length > 0 ? `
-                                        <div class="servicos-lista" style="margin-top: 8px; font-size: 0.9rem;">
-                                            ${h.servicos.map(servico => `
-                                                <div style="margin: 4px 0; color: #ddd;">
-                                                    • ${servico.nome} <span style="color: var(--accent);">R$ ${servico.preco.toFixed(2).replace('.', ',')}</span>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    ` : ''}
-                                </div>
-                                <span class="history-badge" style="
-                                    display: inline-block;
-                                    background: rgba(56, 161, 105, 0.2);
-                                    color: #38a169;
-                                    padding: 4px 10px;
-                                    border-radius: 12px;
-                                    font-size: 0.8rem;
-                                    font-weight: 500;
-                                ">Agendado</span>
-                            </div>
-                            
-                            <button class="btn btn-ready" 
-                                onclick="enviarProntoWhatsApp('${(h.nome || '').replace(/'/g, '\'')}', '${(h.placa || '').replace(/'/g, '\'')}', ${h.originalIndex})" 
-                                style="
-                                    width: 100%; 
-                                    padding: 10px; 
-                                    font-weight: 600;
-                                    background: linear-gradient(90deg, #38a169, #2f855a);
-                                    border: none;
-                                    border-radius: 8px;
-                                    color: white;
-                                    cursor: pointer;
-                                    margin-top: 10px;
-                                    transition: all 0.2s;
-                                "
-                                onmouseover="this.style.opacity='0.9'"
-                                onmouseout="this.style.opacity='1'"
-                            >
-                                &#x2709; AVISAR PRONTO
-                            </button>
-                        </div>
-                    `;
-                });
-
-                html += `
-                        </div>
+                <!-- Horário e Status -->
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 18px;">
+                    <div style="display: flex; align-items: center; gap: 5px; color: #888; font-size: 0.85rem;">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        ${h.hora || '--:--'}
                     </div>
-                `;
-            }
+                    <span style="color: #333;">|</span>
+                    <span style="color: #10b981; font-size: 0.85rem; font-weight: 600; text-transform: lowercase;">agendados</span>
+                </div>
 
-            lista.innerHTML = html;
+                <!-- Lista de Serviços (Layout de Linha) -->
+                ${h.servicos && h.servicos.length > 0 ? `
+                    <div style="border-top: 1px solid rgba(255,255,255,0.05); pt: 15px; margin-bottom: 20px;">
+                        ${h.servicos.map(servico => `
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                <span style="color: #ccc; font-size: 0.95rem;">• ${servico.nome}</span>
+                                <span style="color: #f59e0b; font-weight: 700; font-size: 1rem;">R$ ${servico.preco.toFixed(2).replace('.', ',')}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+                
+                <!-- Botão WhatsApp Estilizado -->
+                <button onclick="enviarProntoWhatsApp('${(h.nome || '').replace(/'/g, "\\'")}', '${(h.placa || '').replace(/'/g, "\\'")}', ${h.originalIndex})" 
+                    style="
+                        width: 100%; 
+                        padding: 14px; 
+                        font-weight: 700;
+                        background: #10b981;
+                        border: none;
+                        border-radius: 12px;
+                        color: white;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                        transition: all 0.2s;
+                        font-size: 0.9rem;
+                    "
+                    onmouseover="this.style.background='#059669'; this.style.transform='translateY(-2px)'"
+                    onmouseout="this.style.background='#10b981'; this.style.transform='translateY(0)'"
+                >
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    AVISAR PRONTO
+                </button>
+            </div>
+        `;
+    });
+
+    html += `
+            </div>
+        </div>
+    `;
+}
+
+lista.innerHTML = html;
         }
 
         function deletarDoHistorico(idx) {
