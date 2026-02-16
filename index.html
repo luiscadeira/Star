@@ -400,12 +400,24 @@
         }
 
         // --- SISTEMA DE HISTÓRICO ---
+        function getSelectedServices() {
+            const services = [];
+            document.querySelectorAll('.svc:checked').forEach(checkbox => {
+                services.push({
+                    nome: checkbox.value,
+                    preco: parseFloat(checkbox.dataset.price) || 0
+                });
+            });
+            return services;
+        }
+
         function salvarNoHistorico() {
             const placa = document.getElementById('carInfo').value.toUpperCase();
             const nome = document.getElementById('clientName').value;
             const total = document.getElementById('totalValue').innerText;
             const dataServico = document.getElementById('serviceDate').value;
             const horaServico = document.getElementById('serviceTime').value;
+            const servicos = getSelectedServices();
             
             if (!placa || !nome) return;
             
@@ -420,9 +432,11 @@
             historico.unshift({ 
                 placa, 
                 nome, 
-                total, 
+                total,
+                servicos,
                 data: dataFormatada,
-                hora: horaServico
+                hora: horaServico,
+                timestamp: new Date().getTime()
             });
             
             localStorage.setItem('star_history', JSON.stringify(historico.slice(0, 50)));
@@ -535,19 +549,38 @@
                             </div>
                             
                             <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px;">
-                                <span class="history-time" style="
-                                    display: inline-flex;
-                                    align-items: center;
-                                    gap: 5px;
-                                    font-size: 0.9rem;
-                                    background: rgba(255, 255, 255, 0.05);
-                                    padding: 4px 10px;
-                                    border-radius: 12px;
-                                    color: #f0f0f0;
-                                ">
-                                    <span>🕒</span>
-                                    <span>${h.hora || '--:--'}</span>
-                                </span>
+                                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                                    <span class="history-time" style="
+                                        display: inline-flex;
+                                        align-items: center;
+                                        gap: 5px;
+                                        font-size: 0.9rem;
+                                        background: rgba(255, 255, 255, 0.05);
+                                        padding: 4px 10px;
+                                        border-radius: 12px;
+                                        color: #f0f0f0;
+                                    ">
+                                        <span>🕒</span>
+                                        <span>${h.hora || '--:--'}</span>
+                                    </span>
+                                    ${h.servicos && h.servicos.length > 0 ? `
+                                        <div class="servicos-lista" style="display: flex; flex-direction: column; gap: 6px; margin-top: 6px;">
+                                            ${h.servicos.map(servico => `
+                                                <div style="
+                                                    display: flex;
+                                                    justify-content: space-between;
+                                                    background: rgba(255, 255, 255, 0.03);
+                                                    padding: 6px 10px;
+                                                    border-radius: 6px;
+                                                    font-size: 0.85rem;
+                                                ">
+                                                    <span>${servico.nome}</span>
+                                                    <span style="color: var(--accent); font-weight: 500;">R$ ${servico.preco.toFixed(2).replace('.', ',')}</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
+                                </div>
                                 <span class="history-badge" style="
                                     display: inline-block;
                                     background: rgba(56, 161, 105, 0.2);
