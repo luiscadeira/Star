@@ -7,8 +7,8 @@
     <meta name="theme-color" content="#f59e0b">
     <meta name="description" content="Estética automotiva de alto padrão. Cuidamos do seu carro com brilho e proteção.">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-web-app-capable" content="yes">
+    <meta name="apple-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="Icon.png">
@@ -27,31 +27,18 @@
     <div class="grid"></div>
 
     <header>
-        <!-- Logo do site -->
-
         <img src="logo.png" alt="Logo STAR STUDIO CAR">
-
-
         <span class="badge">ESTÉTICA AUTOMOTIVA</span>
     </header>
 
     <div class="container">
 
-
         <nav class="nav-tabs">
             <div class="tab-highlight"></div>
-            <button class="tab-btn active" onclick="openTab('semanal', this)"><span
-                    style="font-size:1.3em;margin-right:6px;"></span> <span
-                    style="font-weight:700;">AGENDA</span></button>
-            <button class="tab-btn" onclick="openTab('individual', this)"><span
-                    style="font-size:1.3em;margin-right:6px;"></span> <span
-                    style="font-weight:700;">SERVIÇOS</span></button>
-            <button class="tab-btn" onclick="openTab('historico', this)"><span
-                    style="font-size:1.3em;margin-right:6px;"></span> <span
-                    style="font-weight:700;">AVISOS</span></button>
-            <button class="tab-btn" onclick="openTab('config', this)"><span
-                    style="font-size:1.3em;margin-right:6px;"></span> <span
-                    style="font-weight:700;">CONFIG</span></button>
+            <button class="tab-btn active" onclick="openTab('semanal', this)"><span style="font-weight:700;">AGENDA</span></button>
+            <button class="tab-btn" onclick="openTab('individual', this)"><span style="font-weight:700;">SERVIÇOS</span></button>
+            <button class="tab-btn" onclick="openTab('historico', this)"><span style="font-weight:700;">AVISOS</span></button>
+            <button class="tab-btn" onclick="openTab('config', this)"><span style="font-weight:700;">CONFIG</span></button>
         </nav>
 
         <!-- ABA 1: AGENDA -->
@@ -60,9 +47,7 @@
                 <div class="section-title">📅 Período da Semana</div>
                 <input type="date" id="mondayDate" onchange="atualizarSemana()">
                 <div id="dayGrid"></div>
-                <button class="btn"
-                    style="background:#ff4757; color:white; margin-top:10px; font-size:0.7rem; padding:8px; width:100%"
-                    onclick="resetarAgendaParaAberta()">🔄 Resetar Toda Semana</button>
+                <button class="btn" style="background:#ff4757; color:white; margin-top:10px; font-size:0.7rem; padding:8px; width:100%" onclick="resetarAgendaParaAberta()">🔄 Resetar Toda Semana</button>
             </div>
             <div class="glass-card">
                 <div class="msg-block">
@@ -70,18 +55,17 @@
                 </div>
                 <div style="display:flex; gap:10px; margin-top:10px;">
                     <button class="btn btn-copy" onclick="copiar('outputSemanal')">📋 Copiar Lista</button>
-                    <button class="btn" style="background:var(--accent); color:white" onclick="copiarStatusSemanal()">📅
-                        Status</button>
+                    <button class="btn" style="background:var(--accent); color:white" onclick="copiarStatusSemanal()">📅 Status</button>
                 </div>
             </div>
         </div>
 
-        <!-- ABA 2: Veículo -->
+        <!-- ABA 2: SERVIÇOS -->
         <div id="individual" class="tab-content">
             <div class="glass-card">
                 <div class="section-title">👤 Cliente & Veículo</div>
                 <input type="text" id="clientName" placeholder="CLIENTE" oninput="gerarMensagemIndividual()">
-                <input type="text" id="carInfo" placeholder="VEICULO" oninput="buscarHistorico(this.value)">
+                <input type="text" id="carInfo" placeholder="VEICULO / PLACA" oninput="buscarHistorico(this.value)">
                 <div style="display:flex; gap:10px">
                     <input type="date" id="serviceDate" onchange="gerarMensagemIndividual()">
                     <input type="time" id="serviceTime" onchange="gerarMensagemIndividual()">
@@ -90,25 +74,18 @@
 
             <div class="glass-card">
                 <div class="section-title">🛠 Serviços</div>
-                <div class="services-grid" id="servicesGrid">
-                    <!-- Serviços serão renderizados dinamicamente a partir do armazenamento -->
-                </div>
+                <div class="services-grid" id="servicesGrid"></div>
             </div>
 
             <div class="glass-card">
                 <div class="section-title">⚠️ Vistoria & Entrega</div>
                 <div class="inspection-grid" style="margin-bottom: 15px;">
-                    <label class="inspect-item"><input type="checkbox" class="insp" value="Riscos na pintura"
-                            onchange="gerarMensagemIndividual()"> ✴️ Riscos</label>
-                    <label class="inspect-item"><input type="checkbox" class="insp" value="Amassados"
-                            onchange="gerarMensagemIndividual()"> 🛠️ Amassados</label>
-                    <label class="inspect-item"><input type="checkbox" class="insp" value="Rodas raladas"
-                            onchange="gerarMensagemIndividual()"> 🛞 Rodas</label>
-                    <label class="inspect-item"><input type="checkbox" class="insp" value="Vidro trincado"
-                            onchange="gerarMensagemIndividual()"> 🪟 Vidro</label>
+                    <label class="inspect-item"><input type="checkbox" class="insp" value="Riscos na pintura" onchange="gerarMensagemIndividual()"> ✴️ Riscos</label>
+                    <label class="inspect-item"><input type="checkbox" class="insp" value="Amassados" onchange="gerarMensagemIndividual()"> 🛠️ Amassados</label>
+                    <label class="inspect-item"><input type="checkbox" class="insp" value="Rodas raladas" onchange="gerarMensagemIndividual()"> 🛞 Rodas</label>
+                    <label class="inspect-item"><input type="checkbox" class="insp" value="Vidro trincado" onchange="gerarMensagemIndividual()"> 🪟 Vidro</label>
                 </div>
-                <input type="text" id="linkFotos" placeholder="Link das Fotos (Opcional)"
-                    oninput="gerarMensagemIndividual()">
+                <input type="text" id="linkFotos" placeholder="Link das Fotos (Opcional)" oninput="gerarMensagemIndividual()">
             </div>
 
             <div class="glass-card">
@@ -122,81 +99,47 @@
                 <div style="display:flex; gap:10px; margin-top:10px;">
                     <button class="btn btn-copy" onclick="baixarICS()">📅 ICS</button>
                     <button class="btn btn-copy" onclick="copiarIndividual()">📋 Copiar</button>
-                    <button class="btn" style="background:var(--accent); color:white" onclick="limparCampos()">🔄
-                        Limpar</button>
+                    <button class="btn" style="background:var(--accent); color:white" onclick="limparCampos()">🔄 Limpar</button>
                 </div>
             </div>
         </div>
 
-        <!-- ABA 3: AVISOS -->
+        <!-- ABA 3: AVISOS (HISTÓRICO) -->
         <div id="historico" class="tab-content">
             <div class="glass-card">
-                <div class="section-title"
-                    style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.1rem;letter-spacing:1px;">
+                <div class="section-title" style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.1rem;letter-spacing:1px; margin-bottom: 20px;">
                     <span style="font-size:1.3em;">📋</span> ÚLTIMOS SERVIÇOS
                 </div>
+
+                <!-- Barra de Busca -->
+                <div style="margin-bottom: 20px; position: relative;">
+                    <input type="text" id="inputBusca" placeholder="Buscar por nome ou placa..." 
+                        oninput="carregarAbaHistorico()" 
+                        style="width: 100%; padding: 12px 12px 12px 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; font-size: 0.95rem; outline: none;">
+                    <span style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); opacity: 0.5;">🔍</span>
+                </div>
+
                 <div id="listaHistorico" class="history-list"></div>
-                <button class="btn btn-delete-all"
-                    style="background:rgba(51,51,51,0.7);color:white;width:100%;margin-top:20px;border-radius:12px;"
-                    onclick="limparHistoricoTotal()">🗑️ Apagar Histórico</button>
+
+                <button class="btn btn-delete-all" style="background:rgba(51,51,51,0.7);color:white;width:100%;margin-top:20px;border-radius:12px;" onclick="limparHistoricoTotal()">🗑️ Apagar Histórico</button>
             </div>
         </div>
 
         <!-- ABA 4: CONFIG -->
         <div id="config" class="tab-content">
             <div class="glass-card">
-                <div class="section-title"
-                    style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.1rem;letter-spacing:1px;">
+                <div class="section-title" style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.1rem;letter-spacing:1px;">
                     <span style="font-size:1.3em;">&#x2699;</span> CONFIGURAÇÕES & SERVIÇOS
-                </div>
-                <p style="color:var(--text-sub); font-size:0.95rem;margin-bottom:18px;">Gerencie os serviços, preços e
-                    ícones. Tudo salvo localmente.</p>
-                <div style="display:flex; gap:10px; margin-top:8px;">
-                    <button class="btn btn-reload"
-                        style="background:linear-gradient(90deg,#333,#444);color:white;border-radius:12px;font-weight:700;"
-                        onclick="renderConfigServices()">&#x1F504; Recarregar</button>
                 </div>
                 <div id="configServices" style="margin-top:18px"></div>
                 <form id="serviceForm" class="add-service-form">
                     <div class="form-group">
-                        <div class="input-with-icon">
-                            <span class="input-icon">🚗</span>
-                            <input type="text" id="newServiceName" placeholder="Nome do serviço" class="form-input"
-                                required autocomplete="off" data-validate="text">
-                            <div class="error-message">Por favor, insira um nome para o serviço</div>
-                        </div>
+                        <input type="text" id="newServiceName" placeholder="Nome do serviço" class="form-input" required>
                     </div>
                     <div class="form-group">
-                        <div class="input-with-icon">
-                            <span class="input-icon">💰</span>
-                            <span class="currency">R$</span>
-                            <input type="text" id="newServicePrice" placeholder="0,00" class="form-input price-input"
-                                inputmode="decimal" required data-validate="price">
-                            <div class="error-message">Por favor, insira um preço válido</div>
-                        </div>
+                        <input type="text" id="newServicePrice" placeholder="Preço (ex: 60,00)" class="form-input" required>
                     </div>
-                    <div class="form-group">
-                        <div class="input-with-icon">
-                            <span class="input-icon">⏱️</span>
-                            <select id="serviceDuration" class="form-input" data-validate="number" required>
-                                <option value="">Duração (horas)</option>
-                                <option value="2">2 horas</option>
-                                <option value="4">4 horas</option>
-                                <option value="6">6 horas</option>
-                                <option value="8">8 horas</option>
-                            </select>
-                            <div class="error-message">Por favor, selecione uma duração válida (2, 4, 6 ou 8 horas)
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-save" id="saveButton">
-                            <span class="btn-icon">💾</span>
-                            <span class="btn-text">Adicionar Serviço</span>
-                            <span class="loading-spinner"></span>
-                        </button>
-                        <div class="success-message">Serviço adicionado com sucesso!</div>
-                    </div>
+                    <button type="submit" class="btn btn-save" style="width:100%; margin-top:10px;">💾 Adicionar Serviço</button>
                 </form>
             </div>
         </div>
@@ -209,465 +152,116 @@
     <script>
         const MAP_LINK = "https://maps.app.goo.gl/KPY28spUTp2C3Xp58";
         const dias = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
-        const fmtBRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
         const backgrounds = {
             semanal: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=1920&q=70&fm=webp",
             individual: "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=1920&q=70&fm=webp",
             historico: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1920&q=70&fm=webp",
             config: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1920&q=70&fm=webp"
         };
+
         function setBackground(id) {
             const el = document.querySelector('.bg');
             if (el) el.style.backgroundImage = `url(${backgrounds[id]})`;
         }
-        function updateHighlight(btn) {
-            const nav = document.querySelector('.nav-tabs');
-            const hl = document.querySelector('.tab-highlight');
-            if (!nav || !hl || !btn) return;
-            const r = btn.getBoundingClientRect();
-            const nv = nav.getBoundingClientRect();
-            const left = r.left - nv.left;
-            hl.style.transform = `translateX(${left}px)`;
-            hl.style.width = `${r.width}px`;
-        }
 
         function openTab(id, btn) {
-            const prev = document.querySelector('.tab-content.active');
-            if (prev) {
-                prev.classList.remove('active');
-                prev.classList.add('fade-out');
-                setTimeout(() => prev.classList.remove('fade-out'), 250);
-            }
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('fade-in'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.getElementById(id).classList.add('fade-in');
             if (btn) btn.classList.add('active');
             if (id === 'historico') carregarAbaHistorico();
             if (id === 'config') renderConfigServices();
             setBackground(id);
-            if (btn) updateHighlight(btn);
-            // Mostrar botão WhatsApp só na aba NOVO SERVIÇO
             document.getElementById('whatsappAction').style.display = (id === 'individual') ? 'block' : 'none';
+            updateHighlight(btn);
         }
 
-        // --- INICIALIZAÇÃO E PERSISTÊNCIA DA AGENDA ---
-        function initAgenda() {
-            const grid = document.getElementById('dayGrid');
-            if (grid) {
-                grid.innerHTML = dias.map((dia, i) => `
-                    <div class="day-row">
-                        <div><div style="font-size:0.6rem; color:var(--text-sub)" id="date-${i}">--/--</div><strong>${dia}</strong></div>
-                        <select id="status-${i}" onchange="salvarAgendaManual()" style="width:130px; padding:5px; background:#2d2d2d; color:white; border-radius:5px; border:1px solid #444">
-                            <option value="Aberta ✅">Aberta ✅</option>
-                            <option value="*Reservado* ❌">Reservado ❌</option>
-                            <option value="*A confirmar* ⏳">Confirmar ⏳</option>
-                        </select>
-                    </div>`).join('');
-            }
-            carregarAgendaSalva();
-
-            // Set default date to today for service
-            const today = new Date().toISOString().split('T')[0];
-            if (document.getElementById('serviceDate')) document.getElementById('serviceDate').value = today;
-            setBackground('semanal');
-            const activeBtn = document.querySelector('.tab-btn.active');
-            updateHighlight(activeBtn);
-            window.addEventListener('resize', () => updateHighlight(document.querySelector('.tab-btn.active')));
+        function updateHighlight(btn) {
+            const hl = document.querySelector('.tab-highlight');
+            if (!hl || !btn) return;
+            const nav = document.querySelector('.nav-tabs');
+            const r = btn.getBoundingClientRect();
+            const nv = nav.getBoundingClientRect();
+            hl.style.transform = `translateX(${r.left - nv.left}px)`;
+            hl.style.width = `${r.width}px`;
         }
 
-        const styleAnim = document.createElement('style');
-        styleAnim.innerHTML = `
-        @keyframes logoPulse {
-          0% { filter: drop-shadow(0 0 20px rgba(245, 158, 11, .6)); }
-          50% { filter: drop-shadow(0 0 40px rgba(245, 158, 11, .8)); }
-          100% { filter: drop-shadow(0 0 20px rgba(245, 158, 11, .6)); }
-        }`;
-        document.head.appendChild(styleAnim);
+        // --- AGENDA LOGIC ---
+        function atualizarSemana() {
+            const dateEl = document.getElementById('mondayDate');
+            if (!dateEl || !dateEl.value) return;
+            let base = new Date(dateEl.value + 'T12:00:00');
+            let textoSemana = "";
+            dias.forEach((dia, i) => {
+                const d = new Date(base); d.setDate(base.getDate() + i);
+                const dataF = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0');
+                document.getElementById(`date-${i}`).innerText = dataF;
+                const status = document.getElementById(`status-${i}`).value;
+                textoSemana += `📝 *${dia} (${dataF})* – ${status}\n`;
+            });
+            document.getElementById('outputSemanal').value = `📢 *AGENDA DA SEMANA*\n\nOlá! 👋 Horários disponíveis:\n\n${textoSemana}\n*STAR STUDIO CAR* 🚗✨`;
+        }
 
         function salvarAgendaManual() {
-            const dadosAgenda = [];
-            for (let i = 0; i < 7; i++) {
-                const el = document.getElementById(`status-${i}`);
-                if (el) dadosAgenda.push(el.value);
-            }
-            localStorage.setItem('star_agenda_status', JSON.stringify(dadosAgenda));
+            const dados = Array.from({length:7}, (_,i) => document.getElementById(`status-${i}`).value);
+            localStorage.setItem('star_agenda_status', JSON.stringify(dados));
             localStorage.setItem('star_agenda_data', document.getElementById('mondayDate').value);
             atualizarSemana();
         }
 
         function carregarAgendaSalva() {
-            const dataSalva = localStorage.getItem('star_agenda_data');
-            const statusSalvo = JSON.parse(localStorage.getItem('star_agenda_status'));
-
-            if (dataSalva) {
-                const dateEl = document.getElementById('mondayDate');
-                if (dateEl) dateEl.value = dataSalva;
-            } else {
-                setProximaSegunda();
-            }
-
-            if (statusSalvo) {
-                statusSalvo.forEach((status, i) => {
-                    const el = document.getElementById(`status-${i}`);
-                    if (el) el.value = status;
-                });
-            } else {
-                // Default reset if no saved status but we might have reset logic
-            }
+            const data = localStorage.getItem('star_agenda_data');
+            const status = JSON.parse(localStorage.getItem('star_agenda_status'));
+            if (data) document.getElementById('mondayDate').value = data;
+            else setProximaSegunda();
+            if (status) status.forEach((s, i) => document.getElementById(`status-${i}`).value = s);
             atualizarSemana();
-        }
-
-        function resetarAgendaParaAberta() {
-            if (confirm("Deseja abrir todos os horários da semana?")) {
-                for (let i = 0; i < 7; i++) {
-                    const el = document.getElementById(`status-${i}`);
-                    if (el) el.value = "Aberta ✅";
-                }
-                salvarAgendaManual();
-            }
         }
 
         function setProximaSegunda() {
             const d = new Date();
             const day = d.getDay();
-            const diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+            const diff = d.getDate() - day + (day == 0 ? -6 : 1);
             const monday = new Date(d.setDate(diff));
-            const dateEl = document.getElementById('mondayDate');
-            if (dateEl) dateEl.value = monday.toISOString().split('T')[0];
+            document.getElementById('mondayDate').value = monday.toISOString().split('T')[0];
         }
 
-        function atualizarSemana() {
-            const dateEl = document.getElementById('mondayDate');
-            if (!dateEl || !dateEl.value) return;
-
-            const dataInput = dateEl.value;
-            let base = new Date(dataInput + 'T12:00:00');
-            let textoSemana = "";
-            dias.forEach((dia, i) => {
-                const d = new Date(base); d.setDate(base.getDate() + i);
-                const dataF = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0');
-                const labelData = document.getElementById(`date-${i}`);
-                if (labelData) labelData.innerText = dataF;
-
-                const statusEl = document.getElementById(`status-${i}`);
-                if (statusEl) textoSemana += `📝 *${dia} (${dataF})* – ${statusEl.value}\n`;
-            });
-            const out = document.getElementById('outputSemanal');
-            if (out) out.value = `📢 *AGENDA DA SEMANA*\n\nOlá! 👋 Horários disponíveis:\n\n${textoSemana}\n*STAR STUDIO CAR* 🚗✨`;
+        function initAgenda() {
+            const grid = document.getElementById('dayGrid');
+            grid.innerHTML = dias.map((dia, i) => `
+                <div class="day-row">
+                    <div><div style="font-size:0.6rem; color:var(--text-sub)" id="date-${i}">--/--</div><strong>${dia}</strong></div>
+                    <select id="status-${i}" onchange="salvarAgendaManual()">
+                        <option value="Aberta ✅">Aberta ✅</option>
+                        <option value="*Reservado* ❌">Reservado ❌</option>
+                        <option value="*A confirmar* ⏳">Confirmar ⏳</option>
+                    </select>
+                </div>`).join('');
+            carregarAgendaSalva();
         }
 
-        // --- Veículo ---
+        // --- SERVIÇOS & MENSAGEM ---
         function gerarMensagemIndividual() {
             const nome = document.getElementById('clientName').value || "Cliente";
-            const carro = document.getElementById('carInfo').value || "Veículo";
+            const carro = (document.getElementById('carInfo').value || "Veículo").toUpperCase();
             const dataRaw = document.getElementById('serviceDate').value;
             const hora = document.getElementById('serviceTime').value || "00:00";
             let dataF = dataRaw ? new Date(dataRaw + 'T12:00:00').toLocaleDateString('pt-BR') : "--/--/--";
 
             let total = 0;
             const selecionados = Array.from(document.querySelectorAll('.svc:checked')).map(c => {
-                // Usa getPriceValue para garantir consistência na formatação
-                const price = getPriceValue({ value: c.dataset.price });
-                total += price;
-                return `• ${c.value} (${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price)})`;
+                const p = parseFloat(c.dataset.price);
+                total += p;
+                return `• ${c.value} (R$ ${p.toFixed(2).replace('.', ',')})`;
             });
 
             const danos = Array.from(document.querySelectorAll('.insp:checked')).map(c => c.value);
-            // Atualiza o valor total formatado
-            document.getElementById('totalValue').innerText = new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-            }).format(total);
+            document.getElementById('totalValue').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
 
-            let texto = `Olá, *${nome}*! 👋\n\nConfirmamos seu agendamento na *STAR STUDIO CAR* ✅\n\n🚗 *Veículo/Placa:* ${carro}\n🗓 *Data:* ${dataF}\n⏰ *Horário:* ${hora}\n\n🛠 *Serviços:*\n${selecionados.join('\n') || '• A definir'}\n\n💰 *Valor Total:* ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}\n`;
+            let texto = `Olá, *${nome}*! 👋\n\nConfirmamos seu agendamento na *STAR STUDIO CAR* ✅\n\n🚗 *Veículo/Placa:* ${carro}\n🗓 *Data:* ${dataF}\n⏰ *Horário:* ${hora}\n\n🛠 *Serviços:*\n${selecionados.join('\n') || '• A definir'}\n\n💰 *Valor Total:* R$ ${total.toFixed(2).replace('.', ',')}\n`;
             if (danos.length > 0) texto += `\n⚠️ *VISTORIA:* ${danos.join(', ')}.\n`;
             texto += `\n📍 *Localização:* ${MAP_LINK}\n\nLuis – *STAR STUDIO CAR* 🚗✨`;
-
-            const out = document.getElementById('outputIndividual');
-            if (out) out.value = texto;
-        }
-
-        function gerarMensagemPronto() {
-            const nome = document.getElementById('clientName').value || "Cliente";
-            const carro = document.getElementById('carInfo').value || "Veículo";
-            const link = document.getElementById('linkFotos').value;
-
-
-            let texto = `Seu carro está pronto, *${nome}*! ✨🚗\n\nFinalizamos os serviços no seu *${carro}*!\n\n${link ? `📸 *Veja as fotos do serviço:* ${link}\n` : ''}\n💰 *${total}*\n\nO veículo já está disponível para retirada.🌟\n\n📍 *Localização:* ${MAP_LINK}\n\nLuis – *STAR STUDIO CAR* 🚗✨`;
             document.getElementById('outputIndividual').value = texto;
-            showToast("Mensagem de PRONTO gerada!");
-        }
-
-        // --- SISTEMA DE HISTÓRICO ---
-        function getSelectedServices() {
-            const services = [];
-            document.querySelectorAll('.svc:checked').forEach(checkbox => {
-                services.push({
-                    nome: checkbox.value,
-                    preco: parseFloat(checkbox.dataset.price) || 0
-                });
-            });
-            return services;
-        }
-
-        function salvarNoHistorico() {
-            const placa = document.getElementById('carInfo').value.toUpperCase();
-            const nome = document.getElementById('clientName').value;
-            const total = document.getElementById('totalValue').innerText;
-            const dataServico = document.getElementById('serviceDate').value;
-            const horaServico = document.getElementById('serviceTime').value;
-            const servicos = getSelectedServices();
-            
-            if (!placa || !nome) return;
-            
-            // Formatar a data para o padrão brasileiro (DD/MM/AAAA)
-            let dataFormatada = '';
-            if (dataServico) {
-                const [ano, mes, dia] = dataServico.split('-');
-                dataFormatada = `${dia}/${mes}/${ano}`;
-            }
-            
-            let historico = JSON.parse(localStorage.getItem('star_history') || '[]');
-            historico.unshift({ 
-                placa, 
-                nome, 
-                total,
-                servicos,
-                data: dataFormatada,
-                hora: horaServico,
-                timestamp: new Date().getTime()
-            });
-            
-            localStorage.setItem('star_history', JSON.stringify(historico.slice(0, 50)));
-        }
-
-        function buscarHistorico(placa) {
-            gerarMensagemIndividual();
-            if (placa.length < 3) return;
-            const historico = JSON.parse(localStorage.getItem('star_history') || '[]');
-            const clienteFiel = historico.find(h => h.placa.includes(placa.toUpperCase()));
-            if (clienteFiel) document.getElementById('clientName').value = clienteFiel.nome;
-        }
-
-        function formatarDataParaOrdenacao(dataStr) {
-            if (!dataStr) return new Date(0);
-            const [dia, mes, ano] = dataStr.split('/').map(Number);
-            return new Date(ano, mes - 1, dia);
-        }
-
-        function formatarDataParaExibicao(dataStr) {
-            if (!dataStr) return '';
-            const [dia, mes, ano] = dataStr.split('/');
-            const data = new Date(ano, mes - 1, dia);
-            const hoje = new Date();
-            const ontem = new Date(hoje);
-            ontem.setDate(hoje.getDate() - 1);
-            
-            if (data.toDateString() === hoje.toDateString()) {
-                return 'Hoje';
-            } else if (data.toDateString() === ontem.toDateString()) {
-                return 'Ontem';
-            } else {
-                const opcoes = { weekday: 'long', day: 'numeric', month: 'long' };
-                return data.toLocaleDateString('pt-BR', opcoes).replace(/\b\w/g, l => l.toUpperCase());
-            }
-        }
-
-        function carregarAbaHistorico() {
-            const lista = document.getElementById('listaHistorico');
-            let historico = JSON.parse(localStorage.getItem('star_history') || '[]');
-            
-            if (historico.length === 0) {
-                lista.innerHTML = '<p style="text-align:center; color:gray; padding: 20px;">Sem histórico de serviços.</p>';
-                return;
-            }
-
-            // Ordenar por data e hora (mais recentes primeiro)
-            historico.sort((a, b) => {
-                const dataA = formatarDataParaOrdenacao(a.data);
-                const dataB = formatarDataParaOrdenacao(b.data);
-                
-                // Se as datas forem iguais, ordenar por hora (se disponível)
-                if (dataA.getTime() === dataB.getTime() && a.hora && b.hora) {
-                    return a.hora.localeCompare(b.hora);
-                }
-                
-                return dataB - dataA; // Ordem decrescente (mais recente primeiro)
-            });
-
-            // Agrupar por data
-            const agrupadoPorData = historico.reduce((acc, item, idx) => {
-                const dataChave = item.data || 'Sem data';
-                if (!acc[dataChave]) {
-                    acc[dataChave] = [];
-                }
-                // Adicionar índice original para manter a referência ao deletar
-                acc[dataChave].push({...item, originalIndex: idx});
-                return acc;
-            }, {});
-
-            // Gerar HTML agrupado
-            // Gerar HTML agrupado
-let html = '';
-
-for (const [data, itens] of Object.entries(agrupadoPorData)) {
-    const dataFormatada = formatarDataParaExibicao(data);
-    
-    html += `
-        <div class="history-date-group" style="margin-bottom: 25px; font-family: 'Inter', sans-serif;">
-            <div class="date-header" style="
-                color: #888;
-                font-size: 0.75rem;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                margin-bottom: 12px;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            ">
-                ${dataFormatada}
-                <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
-            </div>
-            <div class="history-items" style="display: flex; flex-direction: column; gap: 12px;">
-    `;
-
-    itens.forEach((h, idx) => {
-        html += `
-            <div class="history-item" style="
-                padding: 20px;
-                background: #1a1a1a;
-                border-radius: 16px;
-                border: 1px solid rgba(255, 255, 255, 0.05);
-                position: relative;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            ">
-                <!-- Botão Deletar Minimalista -->
-                <button title="Excluir" onclick="deletarDoHistorico(${h.originalIndex})" 
-                    style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #444; cursor: pointer; transition: 0.2s;"
-                    onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#444'">
-                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                </button>
-                
-                <!-- Nome e Placa -->
-                <div style="margin-bottom: 6px; display: flex; align-items: baseline; gap: 8px;">
-                    <span style="font-size: 1.2rem; font-weight: 800; color: #fff; letter-spacing: -0.5px;">
-                        ${(h.nome || 'Cliente').toUpperCase()}
-                    </span>
-                    <span style="color: #666; font-weight: 400; font-size: 1rem;">-</span>
-                    <span style="color: #aaa; font-weight: 600; font-size: 1rem; letter-spacing: 1px;">
-                        ${(h.placa || '---').toUpperCase()}
-                    </span>
-                </div>
-
-                <!-- Horário e Status -->
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 18px;">
-                    <div style="display: flex; align-items: center; gap: 5px; color: #888; font-size: 0.85rem;">
-                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        ${h.hora || '--:--'}
-                    </div>
-                    <span style="color: #333;">|</span>
-                    <span style="color: #10b981; font-size: 0.85rem; font-weight: 600; text-transform: lowercase;">agendados</span>
-                </div>
-
-                <!-- Lista de Serviços (Layout de Linha) -->
-                ${h.servicos && h.servicos.length > 0 ? `
-                    <div style="border-top: 1px solid rgba(255,255,255,0.05); pt: 15px; margin-bottom: 20px;">
-                        ${h.servicos.map(servico => `
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-                                <span style="color: #ccc; font-size: 0.95rem;">• ${servico.nome}</span>
-                                <span style="color: #f59e0b; font-weight: 700; font-size: 1rem;">R$ ${servico.preco.toFixed(2).replace('.', ',')}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                ` : ''}
-                
-                <!-- Botão WhatsApp Estilizado -->
-                <button onclick="enviarProntoWhatsApp('${(h.nome || '').replace(/'/g, "\\'")}', '${(h.placa || '').replace(/'/g, "\\'")}', ${h.originalIndex})" 
-                    style="
-                        width: 100%; 
-                        padding: 14px; 
-                        font-weight: 700;
-                        background: #10b981;
-                        border: none;
-                        border-radius: 12px;
-                        color: white;
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        gap: 10px;
-                        transition: all 0.2s;
-                        font-size: 0.9rem;
-                    "
-                    onmouseover="this.style.background='#059669'; this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.background='#10b981'; this.style.transform='translateY(0)'"
-                >
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                    AVISAR PRONTO
-                </button>
-            </div>
-        `;
-    });
-
-    html += `
-            </div>
-        </div>
-    `;
-}
-
-lista.innerHTML = html;
-        }
-
-        function deletarDoHistorico(idx) {
-            if (confirm("Excluir este item do histórico?")) {
-                let historico = JSON.parse(localStorage.getItem('star_history') || '[]');
-                historico.splice(idx, 1);
-                localStorage.setItem('star_history', JSON.stringify(historico));
-                carregarAbaHistorico();
-                showToast("Item removido");
-            }
-        }
-
-        function enviarProntoWhatsApp(nome, placa, idx) {
-            let historico = JSON.parse(localStorage.getItem('star_history') || '[]');
-            const item = historico[idx];
-            if (!item) return;
-
-            const link = document.getElementById('linkFotos').value;
-            const MAP_LINK = "https://maps.app.goo.gl/KPY28spUTp2C3Xp58";
-
-            let texto = `Seu carro está pronto, *${nome}*! ✨🚗\n\nFinalizamos os serviços no seu *${placa}*!\n\n${link ? `📸 *Veja as fotos do serviço:* ${link}\n\n` : ''}O veículo já está disponível para retirada. 🌟\n\n📍 *Localização:* ${MAP_LINK}\n\nLuis – *STAR STUDIO CAR* 🚗✨`;
-
-            const txt = encodeURIComponent(texto);
-            window.open(`https://wa.me/?text=${txt}`, '_blank');
-            showToast("WhatsApp aberto com mensagem de PRONTO");
-        }
-
-        function limparHistoricoTotal() {
-            if (confirm("Apagar todo o histórico de atendimentos?")) {
-                localStorage.removeItem('star_history');
-                carregarAbaHistorico();
-            }
-        }
-
-        // --- AUXILIARES ---
-        async function copiar(id) {
-            const el = document.getElementById(id);
-            const txt = el.tagName === 'TEXTAREA' || el.tagName === 'INPUT' ? el.value : el.innerText;
-            try {
-                await navigator.clipboard.writeText(txt);
-                showToast("Copiado!");
-            } catch (e) {
-                // Fallback
-                const temp = document.createElement('textarea');
-                temp.value = txt;
-                document.body.appendChild(temp);
-                temp.select();
-                document.execCommand('copy');
-                document.body.removeChild(temp);
-                showToast("Copiado!");
-            }
         }
 
         function copiarIndividual() {
@@ -675,205 +269,146 @@ lista.innerHTML = html;
             salvarNoHistorico();
         }
 
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.innerText = msg; t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 2000);
+        // --- HISTÓRICO LOGIC ---
+        function salvarNoHistorico() {
+            const placa = document.getElementById('carInfo').value.toUpperCase();
+            const nome = document.getElementById('clientName').value;
+            const dataServico = document.getElementById('serviceDate').value;
+            const horaServico = document.getElementById('serviceTime').value;
+            const servicos = Array.from(document.querySelectorAll('.svc:checked')).map(c => ({
+                nome: c.value,
+                preco: parseFloat(c.dataset.price)
+            }));
+            
+            if (!placa || !nome) return;
+            
+            let dataFormatada = '';
+            if (dataServico) {
+                const [ano, mes, dia] = dataServico.split('-');
+                dataFormatada = `${dia}/${mes}/${ano}`;
+            }
+            
+            let historico = JSON.parse(localStorage.getItem('star_history') || '[]');
+            historico.unshift({ placa, nome, servicos, data: dataFormatada, hora: horaServico });
+            localStorage.setItem('star_history', JSON.stringify(historico.slice(0, 100)));
         }
 
-        function limparCampos() {
-            // Limpar campos de texto
-            document.getElementById('clientName').value = "";
-            document.getElementById('carInfo').value = "";
-            document.getElementById('linkFotos').value = "";
-            
-            // Limpar data e hora (define a data para hoje e limpa o horário)
+        function formatarDataParaExibicao(dataStr) {
+            if (!dataStr) return 'Sem data';
+            const [dia, mes, ano] = dataStr.split('/');
+            const data = new Date(ano, mes - 1, dia);
             const hoje = new Date();
-            const dataFormatada = hoje.toISOString().split('T')[0];
-            document.getElementById('serviceDate').value = dataFormatada;
-            document.getElementById('serviceTime').value = "";
-            
-            // Desmarcar checkboxes de inspeção e serviços
-            document.querySelectorAll('.insp, .svc').forEach(checkbox => {
-                checkbox.checked = false;
-            });
-            
-            // Remover seleção visual dos botões de serviço
-            document.querySelectorAll('.service-btn').forEach(btn => {
-                btn.classList.remove('selected');
-                btn.style.background = '';
-            });
-            
-            // Resetar o total
-            document.getElementById('totalValue').innerText = 'R$ 0,00';
-            
-            // Atualizar a mensagem individual
-            gerarMensagemIndividual();
+            if (data.toDateString() === hoje.toDateString()) return 'Hoje';
+            return data.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase();
         }
 
-        function copiarStatusSemanal() {
-            copiar('outputSemanal');
-            showToast("Lista da semana copiada!");
+        function carregarAbaHistorico() {
+            const lista = document.getElementById('listaHistorico');
+            const termoBusca = (document.getElementById('inputBusca')?.value || "").toLowerCase();
+            let historico = JSON.parse(localStorage.getItem('star_history') || '[]');
+            
+            if (historico.length === 0) {
+                lista.innerHTML = '<p style="text-align:center; color:gray; padding: 20px;">Sem histórico.</p>';
+                return;
+            }
+
+            // Filtrar
+            const filtrados = historico.filter(h => 
+                (h.nome || "").toLowerCase().includes(termoBusca) || 
+                (h.placa || "").toLowerCase().includes(termoBusca)
+            );
+
+            // Agrupar
+            const agrupado = filtrados.reduce((acc, item, idx) => {
+                const data = item.data || 'Sem data';
+                if (!acc[data]) acc[data] = [];
+                acc[data].push({...item, originalIndex: historico.indexOf(item)});
+                return acc;
+            }, {});
+
+            let html = '';
+            for (const [data, itens] of Object.entries(agrupado)) {
+                const totalDia = itens.reduce((acc, h) => acc + h.servicos.reduce((s, serv) => s + serv.preco, 0), 0);
+                
+                html += `
+                    <div style="margin-bottom: 25px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                            <span style="color:#888; font-size:0.75rem; font-weight:700; letter-spacing:1px;">${formatarDataParaExibicao(data)}</span>
+                            <span style="background:rgba(245,158,11,0.1); color:#f59e0b; padding:2px 8px; border-radius:6px; font-size:0.8rem; font-weight:800;">R$ ${totalDia.toFixed(2).replace('.', ',')}</span>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:12px;">
+                `;
+
+                itens.forEach(h => {
+                    html += `
+                        <div style="padding:20px; background:#1a1a1a; border-radius:16px; border:1px solid rgba(255,255,255,0.05); position:relative;">
+                            <button onclick="deletarDoHistorico(${h.originalIndex})" style="position:absolute; top:15px; right:15px; background:none; border:none; color:#444; cursor:pointer;">🗑️</button>
+                            
+                            <div style="font-size:1.1rem; font-weight:800; color:#fff; margin-bottom:4px;">
+                                ${(h.nome || 'Cliente').toUpperCase()} - ${(h.placa || '---').toUpperCase()}
+                            </div>
+
+                            <div style="font-size:0.85rem; color:#888; margin-bottom:15px; display:flex; gap:8px;">
+                                <span>🕒 ${h.hora || '--:--'}</span> | <span style="color:#10b981; font-weight:700;">agendados</span>
+                            </div>
+
+                            <div style="border-top:1px solid rgba(255,255,255,0.05); padding-top:10px; margin-bottom:15px;">
+                                ${h.servicos.map(s => `
+                                    <div style="display:flex; justify-content:space-between; margin-top:5px;">
+                                        <span style="color:#ccc; font-size:0.9rem;">• ${s.nome}</span>
+                                        <span style="color:#f59e0b; font-weight:700;">R$ ${s.preco.toFixed(2).replace('.', ',')}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+
+                            <button onclick="enviarProntoWhatsApp('${h.nome}', '${h.placa}')" style="width:100%; padding:12px; background:#10b981; color:white; border:none; border-radius:10px; font-weight:700; cursor:pointer;">
+                                ✉ AVISAR PRONTO
+                            </button>
+                        </div>
+                    `;
+                });
+                html += `</div></div>`;
+            }
+            lista.innerHTML = html || '<p style="text-align:center; color:gray;">Nenhum resultado.</p>';
         }
 
-        function enviarWhatsApp() {
-            const tab = document.querySelector('.tab-btn.active').innerText;
-            let id = tab.includes("AGENDA") ? 'outputSemanal' : 'outputIndividual';
-            if (tab.includes("NOVO")) salvarNoHistorico();
-
-            const el = document.getElementById(id);
-            const txt = encodeURIComponent(el ? el.value : "");
-
-            const phoneRaw = document.getElementById('clientPhone') ? document.getElementById('clientPhone').value : '';
-            const digits = (phoneRaw || '').replace(/\D/g, '');
-
-            if (digits.length >= 10) {
-                const num = `55${digits}`;
-                window.open(`https://wa.me/${num}?text=${txt}`, '_blank');
-            } else {
-                window.open(`https://wa.me/?text=${txt}`, '_blank');
+        function deletarDoHistorico(idx) {
+            if (confirm("Excluir item?")) {
+                let h = JSON.parse(localStorage.getItem('star_history') || '[]');
+                h.splice(idx, 1);
+                localStorage.setItem('star_history', JSON.stringify(h));
+                carregarAbaHistorico();
             }
         }
 
-        function baixarICS() {
-            const nome = document.getElementById('clientName').value || "Cliente";
-            const carro = document.getElementById('carInfo').value || "Veículo";
-            const dataRaw = document.getElementById('serviceDate').value;
-            const hora = document.getElementById('serviceTime').value || "09:00";
-            if (!dataRaw) { showToast("Defina data"); return; }
-
-            const start = new Date(`${dataRaw}T${hora}:00`);
-            const end = new Date(start.getTime() + 60 * 60 * 1000);
-
-            const fmt = d => d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-
-            const ics = `BEGIN:VCALENDAR
-PRODID:-//STAR STUDIO CAR//Agenda//PT-BR
-VERSION:2.0
-BEGIN:VEVENT
-UID:${Date.now()}@starstudiocar
-DTSTAMP:${fmt(new Date())}
-DTSTART:${fmt(start)}
-DTEND:${fmt(end)}
-SUMMARY:STAR STUDIO CAR - ${nome}
-LOCATION:${MAP_LINK}
-DESCRIPTION:Veículo: ${carro}
-END:VEVENT
-END:VCALENDAR`;
-
-            const blob = new Blob([ics], { type: 'text/calendar' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `star-${dataRaw}-${hora}.ics`;
-            a.click();
-            URL.revokeObjectURL(a.href);
+        function enviarProntoWhatsApp(nome, placa) {
+            const link = document.getElementById('linkFotos').value;
+            let texto = `Seu carro está pronto, *${nome}*! ✨🚗\n\nFinalizamos os serviços no seu *${placa}*!\n\n${link ? `📸 *Veja as fotos:* ${link}\n\n` : ''}O veículo já está disponível para retirada. 🌟\n\n📍 *Localização:* ${MAP_LINK}\n\nLuis – *STAR STUDIO CAR* 🚗✨`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
         }
 
-        // --- Serviços dinâmicos e configurações (localStorage) ---
+        // --- CONFIG & SERVIÇOS ---
         const DEFAULT_SERVICES = [
             { id: 's1', name: 'Lavagem Comercial', price: 60, icon: '🧼' },
             { id: 's2', name: 'Lavagem Detalhada', price: 185, icon: '✨' },
             { id: 's3', name: 'Higienização de Banco', price: 185, icon: '🪑' },
-            { id: 's4', name: 'Higienização Completa', price: 285, icon: '🧽' },
-            { id: 's5', name: 'Polimento c/ Enceramento', price: 385, icon: '💎' },
-            { id: 's6', name: 'Higienização + Polimento', price: 585, icon: '🏆' }
+            { id: 's4', name: 'Higienização Completa', price: 285, icon: '🧽' }
         ];
 
-        async function getServices(useCache = true) {
-            try {
-                // Tenta carregar do cache primeiro, se permitido
-                if (useCache) {
-                    const cached = localStorage.getItem('star_services');
-                    if (cached) {
-                        return JSON.parse(cached);
-                    }
-                }
-
-                // Se não encontrar no cache ou se useCache for false, tenta carregar do servidor
-                const serverServices = await loadServicesFromServer();
-                if (serverServices) {
-                    return serverServices;
-                }
-
-                // Se não conseguir carregar do servidor, usa o backup local ou os padrões
-                const localBackup = localStorage.getItem('local_services_backup');
-                if (localBackup) {
-                    return JSON.parse(localBackup);
-                }
-
-                // Se nada mais estiver disponível, retorna os serviços padrão
-                return DEFAULT_SERVICES.slice();
-
-            } catch (e) {
-                console.error('Erro ao carregar serviços:', e);
-                return DEFAULT_SERVICES.slice();
-            }
-        }
-
-        function saveServices(arr) {
-            localStorage.setItem('star_services', JSON.stringify(arr));
-            // attempt to save to server if endpoint exists
-            postServicesIfAvailable(arr);
-        }
-
-        // Função para carregar serviços do servidor
-        async function loadServicesFromServer() {
-            try {
-                const response = await fetch('/services.json');
-                if (!response.ok) throw new Error('Falha ao carregar serviços');
-                const serverServices = await response.json();
-                if (Array.isArray(serverServices) && serverServices.length > 0) {
-                    // Salva os serviços do servidor no localStorage
-                    localStorage.setItem('star_services', JSON.stringify(serverServices));
-                    return serverServices;
-                }
-            } catch (error) {
-                console.warn('Não foi possível carregar serviços do servidor:', error);
-            }
-            return null;
-        }
-
-        // Função para sincronizar serviços com o servidor
-        async function postServicesIfAvailable(arr) {
-            try {
-                const response = await fetch('/save_services.php', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-API-Key': 'star_studio_secure_key_2024'
-                    },
-                    body: JSON.stringify(arr)
-                });
-
-                if (!response.ok) throw new Error('Falha na sincronização');
-
-                // Se a sincronização for bem-sucedida, salva uma cópia local
-                localStorage.setItem('last_sync', new Date().toISOString());
-
-                // Salva os serviços no arquivo local para referência futura
-                localStorage.setItem('local_services_backup', JSON.stringify(arr));
-
-                const result = await response.json();
-                console.log('Serviços sincronizados com sucesso:', result);
-                return result;
-            } catch (e) {
-                console.warn('Falha ao sincronizar com o servidor:', e);
-                // Em caso de falha, mantém os dados localmente
-                localStorage.setItem('local_services_backup', JSON.stringify(arr));
-                return null;
-            }
+        async function getServices() {
+            const cached = localStorage.getItem('star_services');
+            return cached ? JSON.parse(cached) : DEFAULT_SERVICES;
         }
 
         async function renderServicesGrid() {
             const services = await getServices();
-            const container = document.getElementById('servicesGrid');
-            if (!container) return;
-            container.innerHTML = services.map(s => `
+            document.getElementById('servicesGrid').innerHTML = services.map(s => `
                 <label class="service-item">
                     <input type="checkbox" class="svc" data-price="${s.price}" value="${s.name}" onchange="gerarMensagemIndividual()">
-                    <div class="svc-icon">${s.icon}</div>
+                    <div class="svc-icon">${s.icon || '🚗'}</div>
                     <div class="svc-info">
                         <span class="svc-title">${s.name}</span>
-                        <span class="svc-price">${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(s.price)}</span>
+                        <span class="svc-price">R$ ${Number(s.price).toFixed(2).replace('.', ',')}</span>
                     </div>
                 </label>
             `).join('');
@@ -881,436 +416,66 @@ END:VCALENDAR`;
 
         async function renderConfigServices() {
             const services = await getServices();
-            const cfg = document.getElementById('configServices');
-            if (!cfg) return;
-            cfg.innerHTML = services.map(s => `
-                <div class="config-card">
-                    <div style="margin-bottom:8px"><strong>${s.name}</strong></div>
-                    <div class="cfg-row">
-                        <div class="icon-box">${s.icon}</div>
-                        <div style="flex:1">
-                            <div class="price-box">
-                                <span class="currency">R$</span>
-                                <input data-id="${s.id}" class="cfg-price" value="${Number(s.price).toFixed(2).replace('.', ',')}" />
-                            </div>
-                        </div>
+            document.getElementById('configServices').innerHTML = services.map(s => `
+                <div class="config-card" style="background:rgba(255,255,255,0.05); padding:15px; border-radius:12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <strong>${s.name}</strong><br>
+                        <span style="color:#f59e0b">R$ ${Number(s.price).toFixed(2).replace('.', ',')}</span>
                     </div>
-                    <div style="margin-top:10px; display:flex; gap:8px">
-                        <button class="btn-save" onclick="saveServiceEdits('${s.id}')">💾 Salvar</button>
-                        <button class="trash-btn" onclick="deleteService('${s.id}')">🗑️</button>
-                    </div>
+                    <button onclick="deleteService('${s.id}')" style="background:none; border:none; color:#ef4444; cursor:pointer;">🗑️</button>
                 </div>
             `).join('');
-            // attach input formatting/validation for prices
-            attachPriceFormatting();
         }
 
-        async function saveServiceEdits(id) {
-            try {
-                const services = await getServices();
-                const priceEl = document.querySelector(`.cfg-price[data-id='${id}']`);
-                const svc = services.find(s => s.id === id);
-                if (!svc) return;
-
-                // price may be formatted with comma
-                const raw = priceEl ? priceEl.value.replace(/\./g, '').replace(',', '.') : '';
-                const p = parseFloat(raw);
-                if (!isNaN(p)) svc.price = p;
-
-                await saveServices(services);
-                await renderServicesGrid();
-                await renderConfigServices();
-            } catch (error) {
-                console.error('Erro ao salvar edição do serviço:', error);
-                alert('Ocorreu um erro ao salvar as alterações. Por favor, tente novamente.');
-            }
-        }
-
-        // Get numeric price value from input
-        function getPriceValue(priceInput) {
-            if (!priceInput) return 0;
-            // Remove non-digit characters except comma and dot
-            let value = priceInput.value.replace(/[^0-9,.]/g, '');
-            // Replace comma with dot for proper float conversion
-            value = value.replace(',', '.');
-            // Convert to number and fix to 2 decimal places
-            const price = parseFloat(value) || 0;
-            return parseFloat(price.toFixed(2));
-        }
-
-        // Format price input for display
-        function formatPrice(input) {
-            if (!input) return 0;
-
-            // Get the numeric value
-            const value = getPriceValue(input);
-
-            // Format as BRL currency (R$ 0,00)
-            input.value = value.toLocaleString('pt-BR', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-
-            return value;
-        }
-
-        // Validate form fields
-        function validateField(field) {
-            const value = field.value.trim();
-            const validationType = field.dataset.validate;
-            const inputContainer = field.closest('.input-with-icon');
-
-            // Reset error state
-            inputContainer?.classList.remove('error');
-
-            // Skip validation if field is not required and empty
-            if (!field.required && !value) return true;
-
-            // Validation rules
-            let isValid = true;
-
-            switch (validationType) {
-                case 'text':
-                    isValid = value.length >= 2;
-                    break;
-
-                case 'price':
-                    const price = getPriceValue({ value });
-                    isValid = price > 0;
-                    break;
-
-                case 'number':
-                    // Valida se é um número e se está entre as durações permitidas (2, 4, 6, 8 horas)
-                    const validDurations = ['2', '4', '6', '8'];
-                    isValid = validDurations.includes(String(value));
-                    break;
-
-                default:
-                    isValid = value.length > 0;
-            }
-
-            // Update UI
-            if (!isValid && inputContainer) {
-                inputContainer.classList.add('error');
-                inputContainer.classList.add('shake');
-                setTimeout(() => inputContainer.classList.remove('shake'), 500);
-            }
-
-            return isValid;
-        }
-
-        // Show success message
-        function showSuccessMessage() {
-            const successMsg = document.querySelector('.success-message');
-            if (successMsg) {
-                successMsg.classList.add('visible');
-                setTimeout(() => successMsg.classList.remove('visible'), 3000);
-            }
-        }
-
-        // Reset form
-        function resetForm() {
-            const form = document.getElementById('serviceForm');
-            if (!form) return;
-
-            form.reset();
-            document.querySelectorAll('.input-with-icon').forEach(el => {
-                el.classList.remove('error');
-            });
-
-            const nameInput = document.getElementById('newServiceName');
-            if (nameInput) nameInput.focus();
-        }
-
-        // Add new service
-        async function addNewService(event) {
-            if (event) event.preventDefault();
-
-            const nameInput = document.getElementById('newServiceName');
-            const priceInput = document.getElementById('newServicePrice');
-            const durationInput = document.getElementById('serviceDuration');
-            const saveButton = document.getElementById('saveButton');
-            const spinner = saveButton?.querySelector('.loading-spinner');
-
-            // Validate all fields
-            const isNameValid = nameInput ? validateField(nameInput) : false;
-            const isPriceValid = priceInput ? validateField(priceInput) : false;
-
-            if (!isNameValid || !isPriceValid) {
-                return false;
-            }
-
-            // Get numeric price value and duration in hours
-            const price = priceInput ? getPriceValue(priceInput) : 0;
-            const duration = durationInput && durationInput.value ? parseInt(durationInput.value) : 0; // Já está em horas
-
-            try {
-                // Show loading state
-                if (saveButton) saveButton.disabled = true;
-                if (spinner) spinner.style.display = 'block';
-
-                // Simulate API call (replace with actual API call)
-                await new Promise(resolve => setTimeout(resolve, 1000));
-
-                // Get existing services
-                const services = await getServices();
-
-                // Check if service already exists to avoid duplicates
-                const serviceName = nameInput.value.trim();
-                const exists = services.find(s => s.name.toLowerCase() === serviceName.toLowerCase());
-
-                if (exists) {
-                    alert('Este serviço já existe!');
-                    return false;
-                }
-
-                // Add new service
-                const newService = {
-                    id: 's' + Date.now(),
-                    name: nameInput.value.trim(),
-                    price: price,
-                    duration: duration,
-                    icon: '🔧' // Default icon
-                };
-
-                services.push(newService);
-                await saveServices(services);
-
-                // Show success message
-                showSuccessMessage();
-
-                // Reset form
-                resetForm();
-
-                // Update services list
-                await renderServicesGrid();
-                await renderConfigServices();
-
-            } catch (error) {
-                console.error('Error saving service:', error);
-                alert('Ocorreu um erro ao salvar o serviço. Por favor, tente novamente.');
-            } finally {
-                // Reset loading state
-                if (saveButton) saveButton.disabled = false;
-                if (spinner) spinner.style.display = 'none';
-            }
-
-            return false;
-        }
-
-        // Initialize form events when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('serviceForm');
-            const nameInput = document.getElementById('newServiceName');
-            const priceInput = document.getElementById('newServicePrice');
-
-            if (form) {
-                // Price input formatting
-                if (priceInput) {
-                    priceInput.addEventListener('input', function () {
-                        // Allow only numbers and comma
-                        this.value = this.value.replace(/[^0-9,]/g, '');
-                    });
-
-                    // Format on blur
-                    priceInput.addEventListener('blur', function () {
-                        if (this.value) {
-                            formatPrice(this);
-                        }
-                    });
-                }
-
-                // Real-time validation
-                if (nameInput) {
-                    nameInput.addEventListener('blur', () => validateField(nameInput));
-                }
-                if (priceInput) {
-                    priceInput.addEventListener('blur', () => validateField(priceInput));
-                }
-
-                // Submit handler
-                form.addEventListener('submit', addNewService);
-            }
-
-            // Focus on name field when config tab is opened
-            const configTab = document.querySelector('.tab-btn[onclick*="config"]');
-            if (configTab && nameInput) {
-                configTab.addEventListener('click', function () {
-                    setTimeout(() => nameInput.focus(), 300);
-                });
-            }
-
-            // Initialize price formatting for config items
-            attachPriceFormatting();
-        });
-
-        function attachPriceFormatting() {
-            // Configura formatação para campos de preço na área de configuração
-            document.querySelectorAll('.cfg-price').forEach(el => {
-                el.addEventListener('input', (e) => {
-                    // Mantém apenas dígitos, vírgula e ponto
-                    e.target.value = e.target.value.replace(/[^0-9.,]/g, '');
-                });
-
-                el.addEventListener('blur', (e) => {
-                    // Usa a função formatPrice para formatar o valor ao sair do campo
-                    formatPrice(e.target);
-                });
-            });
-
-            // Configura formatação para o campo de novo preço
-            const newPrice = document.getElementById('newServicePrice');
-            if (newPrice) {
-                // Mantém apenas dígitos, vírgula e ponto durante a digitação
-                newPrice.addEventListener('input', (e) => {
-                    e.target.value = e.target.value.replace(/[^0-9.,]/g, '');
-                });
-
-                // Formata o valor ao sair do campo
-                newPrice.addEventListener('blur', (e) => {
-                    formatPrice(e.target);
-                });
-            }
-        }
+        document.getElementById('serviceForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const nome = document.getElementById('newServiceName').value;
+            const preco = parseFloat(document.getElementById('newServicePrice').value.replace(',', '.'));
+            if (isNaN(preco)) return alert("Preço inválido");
+            const services = await getServices();
+            services.push({ id: 's'+Date.now(), name: nome, price: preco, icon: '🔧' });
+            localStorage.setItem('star_services', JSON.stringify(services));
+            renderServicesGrid(); renderConfigServices();
+            e.target.reset();
+        };
 
         async function deleteService(id) {
-            if (!confirm('Remover este serviço?')) return;
-            try {
-                const services = await getServices();
-                const updatedServices = services.filter(s => s.id !== id);
-                await saveServices(updatedServices);
-                await renderServicesGrid();
-                await renderConfigServices();
-            } catch (error) {
-                console.error('Erro ao remover serviço:', error);
-                alert('Ocorreu um erro ao remover o serviço. Por favor, tente novamente.');
-            }
+            if (!confirm("Excluir serviço?")) return;
+            const services = (await getServices()).filter(s => s.id !== id);
+            localStorage.setItem('star_services', JSON.stringify(services));
+            renderServicesGrid(); renderConfigServices();
         }
 
-        // Inicialização da aplicação
-        async function initApp() {
-            // Inicializa a agenda e os dias da semana
+        // --- AUX ---
+        function copiar(id) {
+            const el = document.getElementById(id);
+            el.select();
+            document.execCommand('copy');
+            const t = document.getElementById('toast');
+            t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 2000);
+        }
+
+        function limparCampos() {
+            document.getElementById('clientName').value = "";
+            document.getElementById('carInfo').value = "";
+            document.querySelectorAll('.svc, .insp').forEach(c => c.checked = false);
+            gerarMensagemIndividual();
+        }
+
+        function buscarHistorico(placa) {
+            gerarMensagemIndividual();
+            if (placa.length < 3) return;
+            const h = JSON.parse(localStorage.getItem('star_history') || '[]');
+            const found = h.find(item => item.placa.includes(placa.toUpperCase()));
+            if (found) document.getElementById('clientName').value = found.nome;
+        }
+
+        window.onload = () => {
             initAgenda();
-
-            // Limpa duplicatas existentes por nome antes de renderizar
-            try {
-                const services = await getServices();
-                const seen = new Set();
-                const uniqueServices = services.filter(s => {
-                    const name = s.name.toLowerCase().trim();
-                    if (seen.has(name)) return false;
-                    seen.add(name);
-                    return true;
-                });
-                if (uniqueServices.length !== services.length) {
-                    await saveServices(uniqueServices);
-                }
-            } catch (e) {
-                console.error('Erro ao limpar duplicatas:', e);
-            }
-
-            // Carrega serviços do servidor ao iniciar
-            try {
-                const services = await getServices(false); // false para forçar atualização do servidor
-                // Renderiza a grade de serviços
-                await renderServicesGrid();
-                // Removido renderConfigServices daqui para evitar duplicidade de renderização inicial
-                // e garantir que ele só carregue quando o usuário abrir a aba de configuração
-            } catch (error) {
-                console.error('Erro ao carregar serviços iniciais:', error);
-            }
-        }
-
-        window.onload = initApp;
-        // Registra o Service Worker e configura o prompt de instalação
-        if ('serviceWorker' in navigator) {
-            let deferredPrompt;
-
-            // Configura o evento para o prompt de instalação
-            window.addEventListener('beforeinstallprompt', (e) => {
-                console.log('beforeinstallprompt disparado');
-                // Previne que o prompt apareça automaticamente
-                e.preventDefault();
-                // Armazena o evento para que possa ser acionado depois
-                window.deferredPrompt = e;
-
-                // Mostra o botão de instalação
-                showInstallPromotion();
-            });
-
-            // Função para mostrar o botão de instalação
-            function showInstallPromotion() {
-                // Verifica se já existe um botão de instalação
-                let installButton = document.getElementById('installButton');
-
-                if (!installButton) {
-                    // Cria o botão de instalação
-                    installButton = document.createElement('button');
-                    installButton.id = 'installButton';
-                    installButton.textContent = 'Instalar App';
-                    installButton.style.position = 'fixed';
-                    installButton.style.bottom = '20px';
-                    installButton.style.left = '50%';
-                    installButton.style.transform = 'translateX(-50%)';
-                    installButton.style.padding = '10px 20px';
-                    installButton.style.backgroundColor = '#f59e0b';
-                    installButton.style.color = 'black';
-                    installButton.style.border = 'none';
-                    installButton.style.borderRadius = '20px';
-                    installButton.style.zIndex = '1000';
-                    installButton.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
-                    document.body.appendChild(installButton);
-
-                    // Adiciona o evento de clique ao botão
-                    installButton.addEventListener('click', installApp);
-                }
-            }
-
-            // Função para instalar o aplicativo
-            function installApp() {
-                if (window.deferredPrompt) {
-                    // Mostra o prompt de instalação
-                    window.deferredPrompt.prompt();
-
-                    // Aguarda a resposta do usuário
-                    window.deferredPrompt.userChoice.then((choiceResult) => {
-                        console.log('User choice', choiceResult.outcome);
-
-                        if (choiceResult.outcome === 'accepted') {
-                            console.log('Usuário aceitou a instalação');
-                        } else {
-                            console.log('Usuário recusou a instalação');
-                        }
-
-                        // Limpa o deferredPrompt
-                        window.deferredPrompt = null;
-
-                        // Remove o botão de instalação
-                        const installButton = document.getElementById('installButton');
-                        if (installButton) {
-                            installButton.remove();
-                        }
-                    });
-                }
-            }
-
-            // Registra o Service Worker
-            navigator.serviceWorker.register('/Star/sw.js')
-                .then(registration => {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-
-                    // Verifica se já está instalado
-                    if (window.matchMedia('(display-mode: standalone)').matches) {
-                        console.log('Aplicativo já instalado');
-                        const installButton = document.getElementById('installButton');
-                        if (installButton) {
-                            installButton.style.display = 'none';
-                        }
-                    }
-                })
-                .catch(err => console.error('Falha no registro do ServiceWorker: ', err));
-        }
+            renderServicesGrid();
+            setBackground('semanal');
+        };
     </script>
 </body>
-
 </html>
