@@ -76,6 +76,7 @@
             </div>
         </div>
 
+        <!-- ABA 2: Veículo -->
         <div id="individual" class="tab-content">
             <div class="glass-card">
                 <div class="section-title">👤 Cliente & Veículo</div>
@@ -356,7 +357,7 @@
             if (out) out.value = `📢 *AGENDA DA SEMANA*\n\nOlá! 👋 Horários disponíveis:\n\n${textoSemana}\n*STAR STUDIO CAR* 🚗✨`;
         }
 
-        // --- GERAÇÃO DE MENSAGENS ---
+        // --- Veículo ---
         function gerarMensagemIndividual() {
             const nome = document.getElementById('clientName').value || "Cliente";
             const carro = document.getElementById('carInfo').value || "Veículo";
@@ -403,9 +404,27 @@
             const placa = document.getElementById('carInfo').value.toUpperCase();
             const nome = document.getElementById('clientName').value;
             const total = document.getElementById('totalValue').innerText;
+            const dataServico = document.getElementById('serviceDate').value;
+            const horaServico = document.getElementById('serviceTime').value;
+            
             if (!placa || !nome) return;
+            
+            // Formatar a data para o padrão brasileiro (DD/MM/AAAA)
+            let dataFormatada = '';
+            if (dataServico) {
+                const [ano, mes, dia] = dataServico.split('-');
+                dataFormatada = `${dia}/${mes}/${ano}`;
+            }
+            
             let historico = JSON.parse(localStorage.getItem('star_history') || '[]');
-            historico.unshift({ placa, nome, total, data: new Date().toLocaleDateString('pt-BR') });
+            historico.unshift({ 
+                placa, 
+                nome, 
+                total, 
+                data: dataFormatada,
+                hora: horaServico
+            });
+            
             localStorage.setItem('star_history', JSON.stringify(historico.slice(0, 50)));
         }
 
@@ -427,8 +446,13 @@
                         <span class="history-plate" style="font-size: 1.1rem; letter-spacing: 1px;">${h.placa || ''}</span>
                         <span class="history-badge">Agendado</span>
                     </div>
-                    <div style="display:flex;align-items:center;gap:15px;margin-bottom:8px;">
-                        <span class="history-date" style="font-size: 0.95rem;">📅 ${h.data || ''}</span>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                        <div style="display:flex;align-items:center;gap:15px;">
+                            <span class="history-date" style="font-size: 0.95rem;display:flex;align-items:center;gap:5px;">
+                                <span>📅</span>
+                                <span>${h.data || ''} ${h.hora ? '• ' + h.hora : ''}</span>
+                            </span>
+                        </div>
                         <span class="history-value" style="font-weight: 700; color: var(--accent);">💰 ${h.total || ''}</span>
                     </div>
                     <div style="color:#e0e0e0;font-size:1rem;margin-bottom:10px;font-weight:500;">👤 ${h.nome || ''}</div>
