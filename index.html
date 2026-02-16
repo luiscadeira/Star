@@ -436,32 +436,159 @@
             if (clienteFiel) document.getElementById('clientName').value = clienteFiel.nome;
         }
 
+        function formatarDataParaOrdenacao(dataStr) {
+            if (!dataStr) return new Date(0);
+            const [dia, mes, ano] = dataStr.split('/').map(Number);
+            return new Date(ano, mes - 1, dia);
+        }
+
+        function formatarDataParaExibicao(dataStr) {
+            if (!dataStr) return '';
+            const [dia, mes, ano] = dataStr.split('/');
+            const data = new Date(ano, mes - 1, dia);
+            const hoje = new Date();
+            const ontem = new Date(hoje);
+            ontem.setDate(hoje.getDate() - 1);
+            
+            if (data.toDateString() === hoje.toDateString()) {
+                return 'Hoje';
+            } else if (data.toDateString() === ontem.toDateString()) {
+                return 'Ontem';
+            } else {
+                const opcoes = { weekday: 'long', day: 'numeric', month: 'long' };
+                return data.toLocaleDateString('pt-BR', opcoes).replace(/\b\w/g, l => l.toUpperCase());
+            }
+        }
+
         function carregarAbaHistorico() {
             const lista = document.getElementById('listaHistorico');
-            const historico = JSON.parse(localStorage.getItem('star_history') || '[]');
-            lista.innerHTML = historico.map((h, idx) => `
-                <div class="history-item" style="padding: 15px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                    <button class="btn-delete" title="Excluir" onclick="deletarDoHistorico(${idx})" style="top: 10px; right: 10px;">🗑️</button>
-                    <div class="history-header" style="margin-bottom: 10px;">
-                        <span class="history-plate" style="font-size: 1.1rem; letter-spacing: 1px;">${h.placa || ''}</span>
-                        <span class="history-badge">Agendado</span>
-                    </div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-                        <div style="display:flex;align-items:center;gap:15px;">
-                            <span class="history-date" style="font-size: 0.95rem;display:flex;align-items:center;gap:5px;">
-                                <span>📅</span>
-                                <span>${h.data || ''} ${h.hora ? '• ' + h.hora : ''}</span>
-                            </span>
+            let historico = JSON.parse(localStorage.getItem('star_history') || '[]');
+            
+            if (historico.length === 0) {
+                lista.innerHTML = '<p style="text-align:center; color:gray; padding: 20px;">Sem histórico de serviços.</p>';
+                return;
+            }
+
+            // Ordenar por data e hora (mais recentes primeiro)
+            historico.sort((a, b) => {
+                const dataA = formatarDataParaOrdenacao(a.data);
+                const dataB = formatarDataParaOrdenacao(b.data);
+                
+                // Se as datas forem iguais, ordenar por hora (se disponível)
+                if (dataA.getTime() === dataB.getTime() && a.hora && b.hora) {
+                    return a.hora.localeCompare(b.hora);
+                }
+                
+                return dataB - dataA; // Ordem decrescente (mais recente primeiro)
+            });
+
+            // Agrupar por data
+            const agrupadoPorData = historico.reduce((acc, item, idx) => {
+                const dataChave = item.data || 'Sem data';
+                if (!acc[dataChave]) {
+                    acc[dataChave] = [];
+                }
+                // Adicionar índice original para manter a referência ao deletar
+                acc[dataChave].push({...item, originalIndex: idx});
+                return acc;
+            }, {});
+
+            // Gerar HTML agrupado
+            let html = '';
+            
+            for (const [data, itens] of Object.entries(agrupadoPorData)) {
+                const dataFormatada = formatarDataParaExibicao(data);
+                
+                html += `
+                    <div class="history-date-group" style="margin-bottom: 20px;">
+                        <div class="date-header" style="
+                            color: #f59e0b;
+                            font-weight: 600;
+                            font-size: 0.9rem;
+                            margin-bottom: 10px;
+                            padding: 5px 0;
+                            border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+                        ">${dataFormatada}</div>
+                        <div class="history-items" style="display: flex; flex-direction: column; gap: 15px;">
+                `;
+
+                itens.forEach((h, idx) => {
+                    html += `
+                        <div class="history-item" style="
+                            padding: 15px;
+                            background: rgba(255, 255, 255, 0.03);
+                            border-radius: 10px;
+                            border: 1px solid rgba(255, 255, 255, 0.05);
+                            position: relative;
+                        ">
+                            <button class="btn-delete" title="Excluir" onclick="deletarDoHistorico(${h.originalIndex})" 
+                                style="position: absolute; top: 10px; right: 10px; background: rgba(255, 99, 71, 0.2); border: none; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                🗑️
+                            </button>
+                            
+                            <div class="history-header" style="margin-bottom: 12px; padding-right: 30px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span class="history-plate" style="font-size: 1.1rem; letter-spacing: 1px; font-weight: 600;">${h.placa || ''}</span>
+                                    <span class="history-value" style="font-weight: 700; color: var(--accent);">${h.total || ''}</span>
+                                </div>
+                                <div style="color: #e0e0e0; font-size: 0.95rem; margin-top: 4px;">👤 ${h.nome || ''}</div>
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px;">
+                                <span class="history-time" style="
+                                    display: inline-flex;
+                                    align-items: center;
+                                    gap: 5px;
+                                    font-size: 0.9rem;
+                                    background: rgba(255, 255, 255, 0.05);
+                                    padding: 4px 10px;
+                                    border-radius: 12px;
+                                    color: #f0f0f0;
+                                ">
+                                    <span>🕒</span>
+                                    <span>${h.hora || '--:--'}</span>
+                                </span>
+                                <span class="history-badge" style="
+                                    display: inline-block;
+                                    background: rgba(56, 161, 105, 0.2);
+                                    color: #38a169;
+                                    padding: 4px 10px;
+                                    border-radius: 12px;
+                                    font-size: 0.8rem;
+                                    font-weight: 500;
+                                ">Agendado</span>
+                            </div>
+                            
+                            <button class="btn btn-ready" 
+                                onclick="enviarProntoWhatsApp('${(h.nome || '').replace(/'/g, '\'')}', '${(h.placa || '').replace(/'/g, '\'')}', ${h.originalIndex})" 
+                                style="
+                                    width: 100%; 
+                                    padding: 10px; 
+                                    font-weight: 600;
+                                    background: linear-gradient(90deg, #38a169, #2f855a);
+                                    border: none;
+                                    border-radius: 8px;
+                                    color: white;
+                                    cursor: pointer;
+                                    margin-top: 10px;
+                                    transition: all 0.2s;
+                                "
+                                onmouseover="this.style.opacity='0.9'"
+                                onmouseout="this.style.opacity='1'"
+                            >
+                                &#x2709; AVISAR PRONTO
+                            </button>
                         </div>
-                        <span class="history-value" style="font-weight: 700; color: var(--accent);">💰 ${h.total || ''}</span>
+                    `;
+                });
+
+                html += `
+                        </div>
                     </div>
-                    <div style="color:#e0e0e0;font-size:1rem;margin-bottom:10px;font-weight:500;">👤 ${h.nome || ''}</div>
-                    <div class="history-services" style="margin-bottom: 15px;">
-                        <span class="history-service-badge" style="padding: 4px 10px; background: rgba(245, 158, 11, 0.2); color: var(--accent); border-radius: 6px; font-size: 0.85rem;">Lavagem Comercial</span>
-                    </div>
-                    <button class="btn btn-ready" onclick="enviarProntoWhatsApp('${h.nome}', '${h.placa}', ${idx})" style="width: 100%; padding: 10px; font-weight: 600;">&#x2709; AVISAR PRONTO</button>
-                </div>
-            `).join('') || '<p style="text-align:center; color:gray; padding: 20px;">Sem histórico de serviços.</p>';
+                `;
+            }
+
+            lista.innerHTML = html;
         }
 
         function deletarDoHistorico(idx) {
@@ -527,11 +654,32 @@
         }
 
         function limparCampos() {
+            // Limpar campos de texto
             document.getElementById('clientName').value = "";
-            document.getElementById('clientPhone').value = "";
             document.getElementById('carInfo').value = "";
             document.getElementById('linkFotos').value = "";
-            document.querySelectorAll('.svc, .insp').forEach(c => c.checked = false);
+            
+            // Limpar data e hora (define a data para hoje e limpa o horário)
+            const hoje = new Date();
+            const dataFormatada = hoje.toISOString().split('T')[0];
+            document.getElementById('serviceDate').value = dataFormatada;
+            document.getElementById('serviceTime').value = "";
+            
+            // Desmarcar checkboxes de inspeção e serviços
+            document.querySelectorAll('.insp, .svc').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            // Remover seleção visual dos botões de serviço
+            document.querySelectorAll('.service-btn').forEach(btn => {
+                btn.classList.remove('selected');
+                btn.style.background = '';
+            });
+            
+            // Resetar o total
+            document.getElementById('totalValue').innerText = 'R$ 0,00';
+            
+            // Atualizar a mensagem individual
             gerarMensagemIndividual();
         }
 
