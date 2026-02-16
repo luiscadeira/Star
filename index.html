@@ -514,20 +514,19 @@ for (const [data, itens] of Object.entries(agrupadoPorData)) {
     const dataFormatada = formatarDataParaExibicao(data);
     
     html += `
-        <div class="history-date-group" style="margin-bottom: 30px;">
+        <div class="history-date-group" style="margin-bottom: 25px; font-family: 'Inter', sans-serif;">
             <div class="date-header" style="
-                color: #f59e0b;
-                font-weight: 700;
-                font-size: 0.85rem;
+                color: #888;
+                font-size: 0.75rem;
                 text-transform: uppercase;
-                letter-spacing: 1.2px;
-                margin-bottom: 15px;
+                letter-spacing: 1px;
+                margin-bottom: 12px;
                 display: flex;
                 align-items: center;
                 gap: 10px;
             ">
                 ${dataFormatada}
-                <div style="flex: 1; height: 1px; background: rgba(245, 158, 11, 0.2);"></div>
+                <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
             </div>
             <div class="history-items" style="display: flex; flex-direction: column; gap: 12px;">
     `;
@@ -535,64 +534,76 @@ for (const [data, itens] of Object.entries(agrupadoPorData)) {
     itens.forEach((h, idx) => {
         html += `
             <div class="history-item" style="
-                padding: 16px;
-                background: rgba(255, 255, 255, 0.04);
-                border-radius: 12px;
-                border: 1px solid rgba(255, 255, 255, 0.08);
+                padding: 20px;
+                background: #1a1a1a;
+                border-radius: 16px;
+                border: 1px solid rgba(255, 255, 255, 0.05);
                 position: relative;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             ">
-                <!-- Botão Deletar -->
-                <button class="btn-delete" title="Excluir" onclick="deletarDoHistorico(${h.originalIndex})" 
-                    style="position: absolute; top: 12px; right: 12px; background: rgba(239, 68, 68, 0.1); border: none; border-radius: 6px; width: 30px; height: 30px; color: #ef4444; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                <!-- Botão Deletar Minimalista -->
+                <button title="Excluir" onclick="deletarDoHistorico(${h.originalIndex})" 
+                    style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #444; cursor: pointer; transition: 0.2s;"
+                    onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#444'">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                 </button>
                 
-                <!-- Linha 1: Nome - Placa -->
-                <div style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 4px; padding-right: 35px;">
-                    ${h.nome || 'Cliente'} - ${h.placa || 'SEM PLACA'}
+                <!-- Nome e Placa -->
+                <div style="margin-bottom: 6px; display: flex; align-items: baseline; gap: 8px;">
+                    <span style="font-size: 1.2rem; font-weight: 800; color: #fff; letter-spacing: -0.5px;">
+                        ${(h.nome || 'Cliente').toUpperCase()}
+                    </span>
+                    <span style="color: #666; font-weight: 400; font-size: 1rem;">-</span>
+                    <span style="color: #aaa; font-weight: 600; font-size: 1rem; letter-spacing: 1px;">
+                        ${(h.placa || '---').toUpperCase()}
+                    </span>
                 </div>
 
-                <!-- Linha 2: Horário - Status -->
-                <div style="font-size: 0.9rem; color: #cbd5e0; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
-                    <span>🕒 ${h.hora || '--:--'}</span>
-                    <span style="color: rgba(255,255,255,0.3);">|</span>
-                    <span style="color: #48bb78; font-weight: 600; text-transform: lowercase;">agendados</span>
+                <!-- Horário e Status -->
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 18px;">
+                    <div style="display: flex; align-items: center; gap: 5px; color: #888; font-size: 0.85rem;">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        ${h.hora || '--:--'}
+                    </div>
+                    <span style="color: #333;">|</span>
+                    <span style="color: #10b981; font-size: 0.85rem; font-weight: 600; text-transform: lowercase;">agendados</span>
                 </div>
 
-                <!-- Lista de Serviços -->
+                <!-- Lista de Serviços (Layout de Linha) -->
                 ${h.servicos && h.servicos.length > 0 ? `
-                    <div class="servicos-lista" style="margin-bottom: 15px;">
+                    <div style="border-top: 1px solid rgba(255,255,255,0.05); pt: 15px; margin-bottom: 20px;">
                         ${h.servicos.map(servico => `
-                            <div style="margin-bottom: 8px;">
-                                <div style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">• ${servico.nome}</div>
-                                <div style="color: #f59e0b; font-weight: 700; font-size: 0.95rem; margin-top: 2px;">
-                                    R$ ${servico.preco.toFixed(2).replace('.', ',')}
-                                </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                <span style="color: #ccc; font-size: 0.95rem;">• ${servico.nome}</span>
+                                <span style="color: #f59e0b; font-weight: 700; font-size: 1rem;">R$ ${servico.preco.toFixed(2).replace('.', ',')}</span>
                             </div>
                         `).join('')}
                     </div>
                 ` : ''}
                 
-                <!-- Botão WhatsApp -->
-                <button class="btn btn-ready" 
-                    onclick="enviarProntoWhatsApp('${(h.nome || '').replace(/'/g, "\\'")}', '${(h.placa || '').replace(/'/g, "\\'")}', ${h.originalIndex})" 
+                <!-- Botão WhatsApp Estilizado -->
+                <button onclick="enviarProntoWhatsApp('${(h.nome || '').replace(/'/g, "\\'")}', '${(h.placa || '').replace(/'/g, "\\'")}', ${h.originalIndex})" 
                     style="
                         width: 100%; 
-                        padding: 12px; 
+                        padding: 14px; 
                         font-weight: 700;
-                        background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+                        background: #10b981;
                         border: none;
-                        border-radius: 10px;
+                        border-radius: 12px;
                         color: white;
                         cursor: pointer;
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        gap: 8px;
-                        margin-top: 5px;
+                        gap: 10px;
+                        transition: all 0.2s;
+                        font-size: 0.9rem;
                     "
+                    onmouseover="this.style.background='#059669'; this.style.transform='translateY(-2px)'"
+                    onmouseout="this.style.background='#10b981'; this.style.transform='translateY(0)'"
                 >
-                    <span style="font-size: 1.1rem;">✉</span> AVISAR PRONTO
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    AVISAR PRONTO
                 </button>
             </div>
         `;
