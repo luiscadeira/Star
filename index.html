@@ -484,81 +484,72 @@
                 return;
             }
 
-            // Ordenar por data e hora (mais recentes primeiro)
+            // Ordenar por timestamp (mais recentes primeiro)
             historico.sort((a, b) => {
-                const dataA = formatarDataParaOrdenacao(a.data);
-                const dataB = formatarDataParaOrdenacao(b.data);
-                
-                // Se as datas forem iguais, ordenar por hora (se disponível)
-                if (dataA.getTime() === dataB.getTime() && a.hora && b.hora) {
-                    return a.hora.localeCompare(b.hora);
-                }
-                
-                return dataB - dataA; // Ordem decrescente (mais recente primeiro)
+                return (b.timestamp || 0) - (a.timestamp || 0);
             });
 
             // Agrupar por data
-            const agrupadoPorData = historico.reduce((acc, item, idx) => {
+            const agrupadoPorData = historico.reduce((acc, item) => {
                 const dataChave = item.data || 'Sem data';
                 if (!acc[dataChave]) {
                     acc[dataChave] = [];
                 }
-                // Adicionar índice original para manter a referência ao deletar
-                acc[dataChave].push({...item, originalIndex: idx});
+                acc[dataChave].push(item);
                 return acc;
             }, {});
 
-            // Gerar HTML agrupado
-            // Gerar HTML agrupado
-let html = '';
-
-for (const [data, itens] of Object.entries(agrupadoPorData)) {
-    const dataFormatada = formatarDataParaExibicao(data);
-    
-    html += `
-        <div class="history-date-group" style="margin-bottom: 25px; font-family: 'Inter', sans-serif;">
-            <div class="date-header" style="
-                color: #888;
-                font-size: 0.75rem;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                margin-bottom: 12px;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            ">
-                ${dataFormatada}
-                <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
-            </div>
-            <div class="history-items" style="display: flex; flex-direction: column; gap: 12px;">
-    `;
-
-    itens.forEach((h, idx) => {
-        html += `
-            <div class="history-item" style="
-                padding: 20px;
-                background: #1a1a1a;
-                border-radius: 16px;
-                border: 1px solid rgba(255, 255, 255, 0.05);
-                position: relative;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            ">
-                <!-- Botão Deletar Minimalista -->
-                <button title="Excluir" onclick="deletarDoHistorico(${h.originalIndex})" 
-                    style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #444; cursor: pointer; transition: 0.2s;"
-                    onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#444'">
-                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                </button>
+            // Renderizar agrupado por data
+            let html = '';
+            Object.keys(agrupadoPorData).forEach(dataChave => {
+                html += `
+                    <div class="history-date-group">
+                        <div class="history-date-header">${dataChave}</div>
+                        <div class="history-date-items">
+                `;
                 
-                <!-- Nome e Placa -->
-                <div style="margin-bottom: 6px; display: flex; align-items: baseline; gap: 8px;">
-                    <span style="font-size: 1.2rem; font-weight: 800; color: #fff; letter-spacing: -0.5px;">
-                        ${(h.nome || 'Cliente').toUpperCase()}
-                    </span>
-                    <span style="color: #666; font-weight: 400; font-size: 1rem;">-</span>
-                    <span style="color: #aaa; font-weight: 600; font-size: 1rem; letter-spacing: 1px;">
-                        ${(h.placa || '---').toUpperCase()}
-                    </span>
+                agrupadoPorData[dataChave].forEach((item, idx) => {
+                    const indexOriginal = historico.indexOf(item);
+                    html += `
+                        <div class="history-item">
+                            <div class="history-header">
+                                <span class="history-plate">🚗 ${item.placa}</span>
+                                <span class="history-badge">CLIENTE</span>
+                                <span class="history-date">${item.hora || ''}</span>
+                            </div>
+                            <div class="history-client">${item.nome}</div>
+                            <div class="history-value">${item.total}</div>
+                            ${item.servicos ? `
+                                <div class="history-services">
+                                    ${item.servicos.map(s => `<span class="history-service-badge">${s.icon} ${s.name}</span>`).join('')}
+                                </div>
+                            ` : ''}
+                            <div style="margin-top:10px; display:flex; gap:8px">
+                                <button class="btn-save" onclick="enviarProntoWhatsApp('${item.nome}', '${item.placa}', ${indexOriginal})">📱 Pronto</button>
+                                <button class="trash-btn" onclick="deletarDoHistorico(${indexOriginal})">🗑️</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+            
+            lista.innerHTML = html;
+        }
+
+        function deletarDoHistorico(idx) {
+            if (confirm("Excluir este item do histórico?")) {
+                let historico = JSON.parse(localStorage.getItem('star_history') || '[]');
+                historico.splice(idx, 1);
+                localStorage.setItem('star_history', JSON.stringify(historico));
+                carregarAbaHistorico();
+                showToast("Item removido");
+            }
+        }
                 </div>
 
                 <!-- Horário e Status -->
