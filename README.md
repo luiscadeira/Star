@@ -202,7 +202,7 @@ Painel de configuração de serviços, preços e ícones:
 
 Lista completa com todos os atendimentos realizados:
 
-![Histórico de Serviços](Historico.jpg)
+![Histórico de Serviços](historico.jpg)
 
 ---
 
