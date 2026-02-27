@@ -16,6 +16,7 @@
     <title>Star Studio Car</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="pwa-styles.css">
+    <link rel="stylesheet" href="image-optimization.css">
 </head>
 
 <body>
@@ -29,7 +30,7 @@
     <header>
         <!-- Logo do site -->
 
-        <img src="logo.png" alt="Logo STAR STUDIO CAR">
+        <img src="logo.png" alt="Logo STAR STUDIO CAR" loading="lazy" decoding="async" width="300" height="100">
 
 
         <span class="badge">ESTÉTICA AUTOMOTIVA</span>
@@ -1309,6 +1310,52 @@ END:VCALENDAR`;
                     }
                 })
                 .catch(err => console.error('Falha no registro do ServiceWorker: ', err));
+
+            // Otimização de imagens - Lazy Loading avançado
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        
+                        // Adiciona classe quando carregar
+                        img.addEventListener('load', () => {
+                            img.classList.add('loaded');
+                        });
+                        
+                        // Para imagens com data-src
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                        }
+                        
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                rootMargin: '50px 0px',
+                threshold: 0.01
+            });
+
+            // Observa todas as imagens com loading="lazy"
+            document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                imageObserver.observe(img);
+            });
+
+            // Preload crítico para o logo
+            const logo = document.querySelector('header img');
+            if (logo) {
+                // Prioridade alta para o logo
+                logo.fetchPriority = 'high';
+                
+                // Adiciona placeholder enquanto carrega
+                logo.classList.add('image-loading');
+                logo.addEventListener('load', () => {
+                    logo.classList.remove('image-loading');
+                    logo.classList.add('loaded');
+                });
+            }
+
+            console.log('🚀 Otimização de imagens ativada!');
         }
     </script>
 </body>

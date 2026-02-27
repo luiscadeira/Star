@@ -1,0 +1,72 @@
+/* Otimização de Imagens - STAR STUDIO CAR */
+
+/* Lazy loading placeholder */
+img[loading="lazy"] {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+img[loading="lazy"].loaded {
+    opacity: 1;
+}
+
+/* Logo otimizado */
+header img {
+    max-width: 300px;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+/* Imagens responsivas */
+@media (max-width: 768px) {
+    header img {
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    header img {
+        max-width: 150px;
+    }
+}
+
+/* Preload crítico */
+.preload-critical {
+    display: none;
+}
+
+/* WebP fallback */
+@supports (format('webp')) {
+    .webp-optimized {
+        background-image: url('logo.webp');
+    }
+}
+
+/* Loading spinner */
+.image-loading {
+    position: relative;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Imagens do README */
+.markdown-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin: 16px 0;
+}
+
+/* Performance hints */
+img {
+    content-visibility: auto;
+    contain-intrinsic-size: 300px 200px;
+}
