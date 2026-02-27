@@ -5,7 +5,14 @@ const ASSETS = [
     `${BASE_PATH}/index.html`,
     `${BASE_PATH}/manifest.json`,
     `${BASE_PATH}/Icon.png`,
+    `${BASE_PATH}/logo.png`,
     `${BASE_PATH}/styles.css`,
+    `${BASE_PATH}/pwa-styles.css`,
+    `${BASE_PATH}/image-optimization.css`,
+    `${BASE_PATH}/image/agenda.jpg`,
+    `${BASE_PATH}/image/adicionar-serviços.jpg`,
+    `${BASE_PATH}/image/historico.jpg`,
+    `${BASE_PATH}/image/serviços.jpg`,
     'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css',
     'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js'
 ];
