@@ -550,66 +550,6 @@
                 showToast("Item removido");
             }
         }
-                </div>
-
-                <!-- Horário e Status -->
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 18px;">
-                    <div style="display: flex; align-items: center; gap: 5px; color: #888; font-size: 0.85rem;">
-                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        ${h.hora || '--:--'}
-                    </div>
-                    <span style="color: #333;">|</span>
-                    <span style="color: #10b981; font-size: 0.85rem; font-weight: 600; text-transform: lowercase;">agendados</span>
-                </div>
-
-                <!-- Lista de Serviços (Layout de Linha) -->
-                ${h.servicos && h.servicos.length > 0 ? `
-                    <div style="border-top: 1px solid rgba(255,255,255,0.05); pt: 15px; margin-bottom: 20px;">
-                        ${h.servicos.map(servico => `
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-                                <span style="color: #ccc; font-size: 0.95rem;">• ${servico.nome}</span>
-                                <span style="color: #f59e0b; font-weight: 700; font-size: 1rem;">R$ ${servico.preco.toFixed(2).replace('.', ',')}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                ` : ''}
-                
-                <!-- Botão WhatsApp Estilizado -->
-                <button onclick="enviarProntoWhatsApp('${(h.nome || '').replace(/'/g, "\\'")}', '${(h.placa || '').replace(/'/g, "\\'")}', ${h.originalIndex})" 
-                    style="
-                        width: 100%; 
-                        padding: 14px; 
-                        font-weight: 700;
-                        background: #10b981;
-                        border: none;
-                        border-radius: 12px;
-                        color: white;
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        gap: 10px;
-                        transition: all 0.2s;
-                        font-size: 0.9rem;
-                    "
-                    onmouseover="this.style.background='#059669'; this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.background='#10b981'; this.style.transform='translateY(0)'"
-                >
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                    AVISAR PRONTO
-                </button>
-            </div>
-        `;
-    });
-
-    html += `
-            </div>
-        </div>
-    `;
-}
-
-lista.innerHTML = html;
-        }
 
         function deletarDoHistorico(idx) {
             if (confirm("Excluir este item do histórico?")) {
