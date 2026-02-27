@@ -184,25 +184,25 @@ Para salvar permanentemente os dados:
 
 Interface principal para controle visual dos agendamentos:
 
-![Agenda Semanal](image/agenda.jpg)
+![Agenda Semanal](agenda.jpg)
 
 ### ➕ **Adicionar Serviços**
 
 Formulário completo para criação de orçamentos e novos serviços:
 
-![Adicionar Serviços](image/adicionar-serviços.jpg)
+![Adicionar Serviços](adicionar-serviços.jpg)
 
 ### 📋 **Gerenciar Serviços**
 
 Painel de configuração de serviços, preços e ícones:
 
-![Gerenciar Serviços](image/serviços.jpg)
+![Gerenciar Serviços](serviços.jpg)
 
 ### 📊 **Histórico de Serviços**
 
 Lista completa com todos os atendimentos realizados:
 
-![Histórico de Serviços](image/historico.jpg)
+![Histórico de Serviços](Historico.jpg)
 
 ---
 
@@ -229,9 +229,9 @@ starstudio/
 
 **STAR STUDIO CAR** 🚗✨  
 Luis - Especialista em Estética Automotiva  
-📍 [Localização no Google Maps](https://maps.app.goo.gl/KPY28spUTp2C3Xp58)  
+
 🌐 [Site Online](https://luiscadeira.github.io/Star/)
 
 ---
 
-**Desenvolvido com ❤️ para STAR STUDIO CAR**
+**Desenvolvido com ❤️ para  STUDIO CAR**
